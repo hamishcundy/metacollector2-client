@@ -15,6 +15,7 @@ public class FormActivity extends ActionBarActivity {
         setContentView(R.layout.activity_form);
         Toolbar toolbar = (Toolbar) findViewById(R.id.action_bar);
         setSupportActionBar(toolbar);
+        //toolbar.setLogo(R.mipmap.ic_launcher);
     }
 
     @Override
