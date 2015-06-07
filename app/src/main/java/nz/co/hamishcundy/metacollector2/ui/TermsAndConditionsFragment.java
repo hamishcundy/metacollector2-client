@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 
@@ -26,6 +28,7 @@ public class TermsAndConditionsFragment extends Fragment {
     private PageFragmentCallbacks mCallbacks;
     private String mKey;
     private TermsAndConditionsPage mPage;
+    private CheckBox check;
 
 
     public static TermsAndConditionsFragment create(String key) {
@@ -55,6 +58,7 @@ public class TermsAndConditionsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_terms_and_conditions, container, false);
         ((TextView) rootView.findViewById(android.R.id.title)).setText(mPage.getTitle());
 
+        check = (CheckBox) rootView.findViewById(R.id.checkBox);
 
         return rootView;
     }
@@ -80,7 +84,13 @@ public class TermsAndConditionsFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
+        check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mPage.getData().putBoolean(TermsAndConditionsPage.TERMS_ACCEPTED_KEY,isChecked);
+                mPage.notifyDataChanged();
+            }
+        });
     }
 
     @Override

@@ -14,8 +14,8 @@ import java.util.ArrayList;
  * A page asking for a name and an email.
  */
 public class TermsAndConditionsPage extends Page {
-    public static final String NAME_DATA_KEY = "name";
-    public static final String EMAIL_DATA_KEY = "email";
+    public static final String TERMS_ACCEPTED_KEY = "termsAccepted";
+
 
     public TermsAndConditionsPage(ModelCallbacks callbacks, String title) {
         super(callbacks, title);
@@ -28,12 +28,12 @@ public class TermsAndConditionsPage extends Page {
 
     @Override
     public void getReviewItems(ArrayList<ReviewItem> dest) {
-        dest.add(new ReviewItem("Your name", mData.getString(NAME_DATA_KEY), getKey(), -1));
-        dest.add(new ReviewItem("Your email", mData.getString(EMAIL_DATA_KEY), getKey(), -1));
+        dest.add(new ReviewItem("Terms & Conditions accepted", mData.getBoolean(TERMS_ACCEPTED_KEY)?"Yes":"No", getKey(), -1));
+
     }
 
     @Override
     public boolean isCompleted() {
-        return !TextUtils.isEmpty(mData.getString(NAME_DATA_KEY));
+        return mData.getBoolean(TERMS_ACCEPTED_KEY);
     }
 }
