@@ -11,7 +11,7 @@ public class CommsHelper {
 
     public static MCApiInterface getCommsInterface(){
         if(mcai != null) {
-            RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint("http://localhost").setLogLevel(RestAdapter.LogLevel.FULL).build();
+            RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint("https://salty-tundra-4797.herokuapp.com").setLogLevel(RestAdapter.LogLevel.FULL).build();
             mcai = restAdapter.create(MCApiInterface.class);
         }
         return mcai;
