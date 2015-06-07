@@ -8,7 +8,7 @@ import retrofit.http.GET;
  */
 public interface MCApiInterface {
 
-    @GET("/testCall")
+    @GET("/api/testCall")
     void testCall(String request, Callback<String> callback);
 
 }
