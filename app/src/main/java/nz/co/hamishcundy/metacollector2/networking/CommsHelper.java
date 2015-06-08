@@ -1,5 +1,7 @@
 package nz.co.hamishcundy.metacollector2.networking;
 
+import android.util.Log;
+
 import retrofit.RestAdapter;
 
 /**
@@ -10,10 +12,12 @@ public class CommsHelper {
     private static MCApiInterface mcai;
 
     public static MCApiInterface getCommsInterface(){
-        if(mcai != null) {
+        if(mcai == null) {
             RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint("https://salty-tundra-4797.herokuapp.com").setLogLevel(RestAdapter.LogLevel.FULL).build();
             mcai = restAdapter.create(MCApiInterface.class);
+
         }
+        Log.d("CH", "MCAI=" + mcai);
         return mcai;
 
     }
