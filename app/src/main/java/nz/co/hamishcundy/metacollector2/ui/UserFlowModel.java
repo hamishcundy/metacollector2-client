@@ -23,7 +23,7 @@ public class UserFlowModel extends AbstractWizardModel {
 
     @Override
     protected PageList onNewRootPageList() {
-        return new PageList(new TermsAndConditionsPage(this, "Terms and Conditions").setRequired(true), new TestPage(this, "Test"));
+        return new PageList(new TermsAndConditionsPage(this, "Terms and Conditions").setRequired(true), new ParticipantDetailsPage(this, "Participant details").setRequired(true), new TestPage(this, "Test"));
 //        return new PageList(new BranchPage(this, "Order type")
 //                .addBranch(
 //                        "Sandwich",
