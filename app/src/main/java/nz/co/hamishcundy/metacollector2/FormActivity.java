@@ -144,7 +144,7 @@ public class FormActivity extends ActionBarActivity implements PageFragmentCallb
     private void updateBottomBar() {
         int position = mPager.getCurrentItem();
         if (position == mCurrentPageSequence.size()) {
-            mNextButton.setText("Finish");
+            mNextButton.setText("Submit");
             mNextButton.setBackgroundResource(R.drawable.finish_background);
             mNextButton.setTextAppearance(this, R.style.TextAppearanceFinish);
         } else {

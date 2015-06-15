@@ -36,7 +36,7 @@ public class ParticipantDetailsPage extends Page {
 
     @Override
     public boolean isCompleted() {
-        return mData.getString(PARTICIPANT_NAME) != null && mData.getString(PARTICIPANT_EMAIL) != null;
+        return mData.getString(PARTICIPANT_NAME) != null && mData.getString(PARTICIPANT_EMAIL) != null && mData.getString(PARTICIPANT_EMAIL).contains("@");
 
     }
 }
