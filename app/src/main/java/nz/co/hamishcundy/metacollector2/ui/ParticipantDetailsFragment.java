@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +59,7 @@ public class ParticipantDetailsFragment extends Fragment {
         nameField = (EditText) rootView.findViewById(R.id.your_name);
         emailField = (EditText) rootView.findViewById(R.id.your_email);
 
-
+        Log.d("PDF", "ONCreateView");
         return rootView;
     }
 
@@ -82,6 +83,7 @@ public class ParticipantDetailsFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.d("PDF", "OnViewCreated");
         nameField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -97,7 +99,7 @@ public class ParticipantDetailsFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 if (s.length() > 0) {
                     mPage.getData().putString(ParticipantDetailsPage.PARTICIPANT_NAME, s.toString());
-                }else{
+                } else {
                     mPage.getData().remove(ParticipantDetailsPage.PARTICIPANT_NAME);
                 }
                 mPage.notifyDataChanged();
@@ -124,7 +126,8 @@ public class ParticipantDetailsFragment extends Fragment {
                 mPage.notifyDataChanged();
             }
         });
-
+        nameField.setText(mPage.getData().getString(ParticipantDetailsPage.PARTICIPANT_NAME));
+        emailField.setText(mPage.getData().getString(ParticipantDetailsPage.PARTICIPANT_EMAIL));
 
     }
 
