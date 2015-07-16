@@ -16,14 +16,19 @@ import com.tech.freak.wizardpager.model.TextPage;
 public class UserFlowModel extends AbstractWizardModel {
 
 
-    public UserFlowModel(Context con){
+    private final boolean detailsRequired;
+    private final String terms;
+
+    public UserFlowModel(Context con, String terms, boolean detailsRequired){
         super(con);
+        this.detailsRequired = detailsRequired;
+        this.terms = terms;
     }
 
 
     @Override
     protected PageList onNewRootPageList() {
-        return new PageList(new TermsAndConditionsPage(this, "Terms and Conditions").setRequired(true), new ParticipantDetailsPage(this, "Participant details").setRequired(true), new MultipleFixedChoicePage(this, "Metadata sources").setChoices("Call logs", "SMS logs", "Contacts", "Browser bookmarks/history", "Facebook data", "Photo metadata", "Installed apps").setRequired(true));
+        return new PageList(new TermsAndConditionsPage(this, "Terms and Conditions").setTerms(terms).setRequired(true), new ParticipantDetailsPage(this, "Participant details").setRequireName(detailsRequired).setRequired(true), new MultipleFixedChoicePage(this, "Metadata sources").setChoices("Call logs", "SMS logs", "Contacts", "Browser bookmarks/history", "Facebook data", "Photo metadata", "Installed apps").setRequired(true));
 //        return new PageList(new BranchPage(this, "Order type")
 //                .addBranch(
 //                        "Sandwich",

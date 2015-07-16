@@ -33,6 +33,11 @@ public class ParticipantDetailsPage extends Page {
         arrayList.add(new ReviewItem("Email", mData.getString(PARTICIPANT_EMAIL), getKey(), -1));
     }
 
+    public Page setRequireName(boolean requireDetails){
+
+        return this;
+    }
+
 
     @Override
     public boolean isCompleted() {

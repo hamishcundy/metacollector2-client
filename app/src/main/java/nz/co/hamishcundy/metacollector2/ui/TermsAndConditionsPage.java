@@ -36,4 +36,8 @@ public class TermsAndConditionsPage extends Page {
     public boolean isCompleted() {
         return mData.getBoolean(TERMS_ACCEPTED_KEY);
     }
+
+    public Page setTerms(String terms) {
+        return this;
+    }
 }

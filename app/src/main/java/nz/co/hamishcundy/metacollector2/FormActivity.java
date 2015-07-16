@@ -36,7 +36,7 @@ public class FormActivity extends ActionBarActivity implements PageFragmentCallb
 
     private boolean mEditingAfterReview;
 
-    private AbstractWizardModel mWizardModel = new UserFlowModel(this);
+    private AbstractWizardModel mWizardModel;
 
     private boolean mConsumePageSelectedEvent;
 
@@ -54,6 +54,8 @@ public class FormActivity extends ActionBarActivity implements PageFragmentCallb
         setSupportActionBar(toolbar);
         if (savedInstanceState != null) {
             mWizardModel.load(savedInstanceState.getBundle("model"));
+        }else{
+            mWizardModel = new UserFlowModel(this, getIntent().getStringExtra("TERMS"), getIntent().getBooleanExtra("DETAILS_REQUIRED", false));
         }
 
         mWizardModel.registerListener(this);
