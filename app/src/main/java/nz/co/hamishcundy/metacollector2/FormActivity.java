@@ -50,6 +50,7 @@ public class FormActivity extends ActionBarActivity implements PageFragmentCallb
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form);
+        setTitle(getIntent().getStringExtra("NAME"));
         Toolbar toolbar = (Toolbar) findViewById(R.id.action_bar);
         setSupportActionBar(toolbar);
         if (savedInstanceState != null) {

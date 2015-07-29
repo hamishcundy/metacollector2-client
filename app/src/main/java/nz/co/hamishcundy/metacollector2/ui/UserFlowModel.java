@@ -28,7 +28,7 @@ public class UserFlowModel extends AbstractWizardModel {
 
     @Override
     protected PageList onNewRootPageList() {
-        return new PageList(new TermsAndConditionsPage(this, "Terms and Conditions").setTerms(terms).setRequired(true), new ParticipantDetailsPage(this, "Participant details").setRequireName(detailsRequired).setRequired(true), new MultipleFixedChoicePage(this, "Metadata sources").setChoices("Call logs", "SMS logs", "Contacts", "Browser bookmarks/history", "Facebook data", "Photo metadata", "Installed apps").setRequired(true));
+        return new PageList(new TermsAndConditionsPage(this, "Terms and Conditions", terms).setRequired(true), new ParticipantDetailsPage(this, "Participant details", detailsRequired).setRequired(true), new MultipleFixedChoicePage(this, "Metadata sources").setChoices("Call logs", "SMS logs", "Contacts", "Browser bookmarks/history", "Facebook data", "Photo metadata", "Installed apps").setRequired(true));
 //        return new PageList(new BranchPage(this, "Order type")
 //                .addBranch(
 //                        "Sandwich",

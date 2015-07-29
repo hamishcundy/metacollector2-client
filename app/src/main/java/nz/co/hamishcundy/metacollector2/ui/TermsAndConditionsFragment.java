@@ -29,15 +29,21 @@ public class TermsAndConditionsFragment extends Fragment {
     private String mKey;
     private TermsAndConditionsPage mPage;
     private CheckBox check;
+    private String terms;
 
 
-    public static TermsAndConditionsFragment create(String key) {
+    public static TermsAndConditionsFragment create(String key, String terms) {
         Bundle args = new Bundle();
         args.putString(ARG_KEY, key);
 
         TermsAndConditionsFragment fragment = new TermsAndConditionsFragment();
         fragment.setArguments(args);
+        fragment.setTerms(terms);
         return fragment;
+    }
+
+    private void setTerms(String terms) {
+        this.terms = terms;
     }
 
     public TermsAndConditionsFragment() {
@@ -57,7 +63,7 @@ public class TermsAndConditionsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_terms_and_conditions, container, false);
         ((TextView) rootView.findViewById(android.R.id.title)).setText(mPage.getTitle());
-
+        ((TextView) rootView.findViewById(R.id.textView)).setText(terms);
         check = (CheckBox) rootView.findViewById(R.id.checkBox);
 
         return rootView;

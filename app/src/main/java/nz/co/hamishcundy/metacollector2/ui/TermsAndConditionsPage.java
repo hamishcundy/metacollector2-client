@@ -15,15 +15,17 @@ import java.util.ArrayList;
  */
 public class TermsAndConditionsPage extends Page {
     public static final String TERMS_ACCEPTED_KEY = "termsAccepted";
+    private final String terms;
 
 
-    public TermsAndConditionsPage(ModelCallbacks callbacks, String title) {
+    public TermsAndConditionsPage(ModelCallbacks callbacks, String title, String terms) {
         super(callbacks, title);
+        this.terms = terms;
     }
 
     @Override
     public Fragment createFragment() {
-        return TermsAndConditionsFragment.create(getKey());
+        return TermsAndConditionsFragment.create(getKey(), terms);
     }
 
     @Override
@@ -37,7 +39,5 @@ public class TermsAndConditionsPage extends Page {
         return mData.getBoolean(TERMS_ACCEPTED_KEY);
     }
 
-    public Page setTerms(String terms) {
-        return this;
-    }
+
 }

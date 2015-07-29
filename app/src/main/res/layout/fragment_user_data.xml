@@ -29,7 +29,8 @@
             android:orientation="vertical">
 
             <TextView style="@style/WizardFormLabel"
-                android:text="Your Name" />
+                android:text="Your Name"
+                android:id="@+id/name_label" />
 
             <EditText android:id="@+id/your_name"
                 android:layout_width="match_parent"
@@ -48,6 +49,16 @@
                 android:saveEnabled="false"
                 android:inputType="textEmailAddress"
                 android:hint="Your email" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NB: Your email address will not be recorded. It will only be used to send an email with instructions to remove your data from the study"
+                android:id="@+id/textView4"
+                android:visibility="gone"
+                style="@style/WizardFormLabel"
+                android:gravity="center"
+                android:paddingTop="10dp" />
 
         </LinearLayout>
     </ScrollView>

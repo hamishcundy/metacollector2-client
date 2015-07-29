@@ -16,32 +16,33 @@ public class ParticipantDetailsPage extends Page {
 
     public static final String PARTICIPANT_NAME = "participantName";
     public static final String PARTICIPANT_EMAIL = "participantEmail";
+    private final boolean detailsRequired;
 
 
-    public ParticipantDetailsPage(ModelCallbacks callbacks, String title) {
+    public ParticipantDetailsPage(ModelCallbacks callbacks, String title, boolean detailsRequired) {
         super(callbacks, title);
+        this.detailsRequired = detailsRequired;
     }
 
     @Override
     public Fragment createFragment() {
-        return ParticipantDetailsFragment.create(getKey());
+        return ParticipantDetailsFragment.create(getKey(), detailsRequired);
     }
 
     @Override
     public void getReviewItems(ArrayList<ReviewItem> arrayList) {
-        arrayList.add(new ReviewItem("Name", mData.getString(PARTICIPANT_NAME), getKey(), -1));
+        if(detailsRequired) {
+            arrayList.add(new ReviewItem("Name", mData.getString(PARTICIPANT_NAME), getKey(), -1));
+        }
         arrayList.add(new ReviewItem("Email", mData.getString(PARTICIPANT_EMAIL), getKey(), -1));
     }
 
-    public Page setRequireName(boolean requireDetails){
 
-        return this;
-    }
 
 
     @Override
     public boolean isCompleted() {
-        return mData.getString(PARTICIPANT_NAME) != null && mData.getString(PARTICIPANT_EMAIL) != null && mData.getString(PARTICIPANT_EMAIL).contains("@");
+        return (!detailsRequired || mData.getString(PARTICIPANT_NAME) != null) && mData.getString(PARTICIPANT_EMAIL) != null && mData.getString(PARTICIPANT_EMAIL).contains("@");
 
     }
 }

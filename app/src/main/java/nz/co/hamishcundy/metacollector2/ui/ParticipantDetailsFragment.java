@@ -23,6 +23,7 @@ import nz.co.hamishcundy.metacollector2.R;
  */
 public class ParticipantDetailsFragment extends Fragment {
     private static final String ARG_KEY = "key";
+    private boolean detailsRequired;
 
     private PageFragmentCallbacks mCallbacks;
     private String mKey;
@@ -30,16 +31,26 @@ public class ParticipantDetailsFragment extends Fragment {
     private EditText nameField, emailField;
 
 
-    public static ParticipantDetailsFragment create(String key) {
+    public static ParticipantDetailsFragment create(String key, boolean detailsReq) {
         Bundle args = new Bundle();
         args.putString(ARG_KEY, key);
 
         ParticipantDetailsFragment fragment = new ParticipantDetailsFragment();
+        fragment.setDetailsRequired(detailsReq);
         fragment.setArguments(args);
+
         return fragment;
     }
 
+    public void setDetailsRequired(boolean detailsRequired){
+        this.detailsRequired = detailsRequired;
+    }
+
+
+
+
     public ParticipantDetailsFragment() {
+
     }
 
     @Override
@@ -58,6 +69,12 @@ public class ParticipantDetailsFragment extends Fragment {
         ((TextView) rootView.findViewById(android.R.id.title)).setText(mPage.getTitle());
         nameField = (EditText) rootView.findViewById(R.id.your_name);
         emailField = (EditText) rootView.findViewById(R.id.your_email);
+        if(!detailsRequired){
+            nameField.setVisibility(View.GONE);
+            rootView.findViewById(R.id.textView4).setVisibility(View.VISIBLE);
+            rootView.findViewById(R.id.name_label).setVisibility(View.GONE);
+
+        }
 
         Log.d("PDF", "ONCreateView");
         return rootView;
