@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import nz.co.hamishcundy.metacollector2.FormActivity;
 import nz.co.hamishcundy.metacollector2.R;
@@ -56,6 +57,14 @@ public class SplashActivity extends ActionBarActivity {
                 build.create().show();
             }
         });
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(findViewById(R.id.progressBar2) != null) {
+                    findViewById(R.id.progressBar2).setVisibility(View.VISIBLE);
+                }
+            }
+        }, 2000);
 
     }
 
