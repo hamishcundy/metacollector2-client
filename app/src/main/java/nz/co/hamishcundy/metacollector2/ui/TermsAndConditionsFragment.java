@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,7 @@ public class TermsAndConditionsFragment extends Fragment {
 
     private void setTerms(String terms) {
         this.terms = terms;
+
     }
 
     public TermsAndConditionsFragment() {
@@ -63,6 +65,7 @@ public class TermsAndConditionsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_terms_and_conditions, container, false);
         ((TextView) rootView.findViewById(android.R.id.title)).setText(mPage.getTitle());
+
         ((TextView) rootView.findViewById(R.id.textView)).setText(terms);
         check = (CheckBox) rootView.findViewById(R.id.checkBox);
 
