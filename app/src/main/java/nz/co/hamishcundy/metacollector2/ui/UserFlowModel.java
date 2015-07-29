@@ -12,7 +12,10 @@ import com.tech.freak.wizardpager.model.PageList;
 import com.tech.freak.wizardpager.model.SingleFixedChoicePage;
 import com.tech.freak.wizardpager.model.TextPage;
 
+import java.util.List;
+
 import nz.co.hamishcundy.metacollector2.FormActivity;
+import nz.co.hamishcundy.metacollector2.data.MetadataSource;
 
 /**
  * Created by hamish on 7/06/15.
@@ -22,6 +25,7 @@ public class UserFlowModel extends AbstractWizardModel {
 
     private static boolean detailsRequired;
     private static String terms;
+    private static List collectionSources;
 
     public UserFlowModel(Context con){
         super(con);
@@ -79,10 +83,10 @@ public class UserFlowModel extends AbstractWizardModel {
 //                new TermsAndConditionsPage(this, "Terms and Conditions").setRequired(true));
     }
 
-    public static AbstractWizardModel create(Context con, String terms2, boolean details_required) {
+    public static AbstractWizardModel create(Context con, String terms2, boolean details_required, List<MetadataSource> sources) {
         terms = terms2;
         detailsRequired = details_required;
-
+        collectionSources = sources;
         return new UserFlowModel(con);
     }
 }
