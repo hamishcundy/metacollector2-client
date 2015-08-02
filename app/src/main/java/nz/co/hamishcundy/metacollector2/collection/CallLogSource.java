@@ -1,5 +1,6 @@
 package nz.co.hamishcundy.metacollector2.collection;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -10,8 +11,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
+import nz.co.hamishcundy.metacollector2.data.records.CallLogRecord;
 import nz.co.hamishcundy.metacollector2.data.records.MetadataRecord;
 
 /**
@@ -20,62 +24,37 @@ import nz.co.hamishcundy.metacollector2.data.records.MetadataRecord;
 public class CallLogSource implements MetadataCollectionSource{
 
     public static final String name = "Call logs";
+    public static final String[] fields = {"formatted_number", "numbertype", "duration", "presentation", "type", "number", "date", "numberlabel", "name", "matched_number", "normalized_number"};
 
 
-    public static void testAccess(Context con){
-//        Cursor c = con.getContentResolver().query(
-//                android.provider.CallLog.Calls.CONTENT_URI, null, null, null,
-//                android.provider.CallLog.Calls.DATE + " DESC ");
+    private static List<MetadataRecord> convertCVtoMDR(List<ContentValues> data, Context con) {
+        ArrayList<MetadataRecord> records=new ArrayList<MetadataRecord>();
+        for(ContentValues cv:data){
+            CallLogRecord clr = new CallLogRecord();
+            clr.formattedNumber = (String) cv.get("formatted_number");
+            clr.numberType = (int) cv.get("numbertype");
+            clr.duration = (int) cv.get("duration");
+            clr.presentation = (int) cv.get("presentation");
+            clr.type = (int) cv.get("type");
+            clr.number = (String) cv.get("number");
+            clr.date = (long) cv.get("date");
+            clr.numberLabel = (String) cv.get("numberlabel");
+            clr.name = (String) cv.get("name");
+            clr.matchedNumber = (String) cv.get("matched_number");
+            clr.normalizedNumber = (String) cv.get("normalized_number");
 
-//        Uri uriSMSURI = Uri.parse("content://sms/");
-//        Cursor c = con.getContentResolver().query(uriSMSURI, null, null,
-//                null, null);
-
-
-        Cursor c = con.getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, null, null,
-                null, null);
-
-        Log.d("CLS", "Size:" + c.getCount() + " Column count:" + c.getColumnCount());
-        for(int i = 0; i < c.getColumnCount(); i++){
-            Log.d("CLS", i + ": " + c.getColumnName(i));
+            records.add(clr);
         }
-
-        JSONArray resultSet = new JSONArray();
-        c.moveToFirst();
-        while (c.isAfterLast() == false) {
-            final int totalColumn = c.getColumnCount();
-            JSONObject rowObject = new JSONObject();
-            int i;// = 0;
-            for (  i = 0; i < totalColumn; i++) {
-
-                if (c.getColumnName(i) != null) {
-                    try {
-                        String getcol = c.getColumnName(i),
-                                getstr = c.getString(i);
-                        rowObject.put(
-                                getcol,
-                                getstr
-                        );
-
-
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }//for
-
-            resultSet.put(rowObject);
-            c.moveToNext();
-        }
-        Log.d("CLS", resultSet.toString());
-
-
-
+        return records;
     }
 
     @Override
     public List<MetadataRecord> retrieveRecords(Context con) {
-        return null;
+        Cursor c = con.getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, null, null,
+                null, null);
+
+        List<ContentValues> data = MetadataCursorUtils.getRecordValuesIfPresent(c, con, fields);
+        List<MetadataRecord> mr = convertCVtoMDR(data, con);
+        return mr;
     }
 }
