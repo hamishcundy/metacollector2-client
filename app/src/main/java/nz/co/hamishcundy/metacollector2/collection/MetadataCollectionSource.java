@@ -11,5 +11,5 @@ import nz.co.hamishcundy.metacollector2.data.records.MetadataRecord;
  */
 public interface MetadataCollectionSource {
 
-    public List<MetadataRecord> retreiveRecords(Context con);
+    public List<MetadataRecord> retrieveRecords(Context con);
 }

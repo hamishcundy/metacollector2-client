@@ -5,8 +5,10 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import nz.co.hamishcundy.metacollector2.data.records.InstalledAppRecord;
 import nz.co.hamishcundy.metacollector2.data.records.MetadataRecord;
 
 /**
@@ -14,23 +16,27 @@ import nz.co.hamishcundy.metacollector2.data.records.MetadataRecord;
  */
 public class InstalledAppsSource implements MetadataCollectionSource{
 
-    public static void testCall(Context con){
+
+
+    @Override
+    public List<MetadataRecord> retrieveRecords(Context con) {
+        ArrayList<MetadataRecord> apps = new ArrayList<MetadataRecord>();
+
         final PackageManager pm = con.getPackageManager();
-//get a list of installed apps.
         List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 
 
         for (ApplicationInfo packageInfo : packages) {
-            Log.d("IAS", "Installed package :" + packageInfo.packageName);
-            //Log.d("IAS", "Source dir : " + packageInfo.sourceDir);
-            Log.d("IAS", "App name :" + pm.getApplicationLabel(packageInfo));
-            Log.d("IAS", "Is launchable?: " + (pm.getLaunchIntentForPackage(packageInfo.packageName) != null));
+            if(pm.getLaunchIntentForPackage(packageInfo.packageName) != null) {//only want apps with launcher intent (dont want system stuff)
+                InstalledAppRecord iar = new InstalledAppRecord();
+                iar.packageName = packageInfo.packageName;
+                iar.appName = pm.getApplicationLabel(packageInfo).toString();
+                apps.add(iar);
+
+
+            }
 
         }
-    }
-
-    @Override
-    public List<MetadataRecord> retreiveRecords(Context con) {
-        return null;
+        return apps;
     }
 }

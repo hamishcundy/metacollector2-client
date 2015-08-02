@@ -60,8 +60,7 @@ public class FormActivity extends ActionBarActivity implements PageFragmentCallb
         }else{
             mWizardModel = UserFlowModel.create(this, getIntent().getStringExtra("TERMS"), getIntent().getBooleanExtra("DETAILS_REQUIRED", false), null);
         }
-        //CallLogSource.testAccess(this);
-        InstalledAppsSource.testCall(this);
+
         mWizardModel.registerListener(this);
 
         mPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());

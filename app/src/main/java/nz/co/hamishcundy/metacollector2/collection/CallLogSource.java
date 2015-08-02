@@ -75,7 +75,7 @@ public class CallLogSource implements MetadataCollectionSource{
     }
 
     @Override
-    public List<MetadataRecord> retreiveRecords(Context con) {
+    public List<MetadataRecord> retrieveRecords(Context con) {
         return null;
     }
 }
