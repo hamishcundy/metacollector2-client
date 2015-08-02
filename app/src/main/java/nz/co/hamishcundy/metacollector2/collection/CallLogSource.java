@@ -2,24 +2,38 @@ package nz.co.hamishcundy.metacollector2.collection;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
+import nz.co.hamishcundy.metacollector2.data.records.MetadataRecord;
+
 /**
  * Created by hamish on 30/07/15.
  */
-public class CallLogSource {
+public class CallLogSource implements MetadataCollectionSource{
 
     public static final String name = "Call logs";
 
 
     public static void testAccess(Context con){
-        Cursor c = con.getContentResolver().query(
-                android.provider.CallLog.Calls.CONTENT_URI, null, null, null,
-                android.provider.CallLog.Calls.DATE + " DESC ");
+//        Cursor c = con.getContentResolver().query(
+//                android.provider.CallLog.Calls.CONTENT_URI, null, null, null,
+//                android.provider.CallLog.Calls.DATE + " DESC ");
+
+//        Uri uriSMSURI = Uri.parse("content://sms/");
+//        Cursor c = con.getContentResolver().query(uriSMSURI, null, null,
+//                null, null);
+
+
+        Cursor c = con.getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, null, null,
+                null, null);
 
         Log.d("CLS", "Size:" + c.getCount() + " Column count:" + c.getColumnCount());
         for(int i = 0; i < c.getColumnCount(); i++){
@@ -58,5 +72,10 @@ public class CallLogSource {
 
 
 
+    }
+
+    @Override
+    public List<MetadataRecord> retreiveRecords(Context con) {
+        return null;
     }
 }

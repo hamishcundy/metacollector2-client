@@ -27,6 +27,7 @@ import com.tech.freak.wizardpager.ui.StepPagerStrip;
 import java.util.List;
 
 import nz.co.hamishcundy.metacollector2.collection.CallLogSource;
+import nz.co.hamishcundy.metacollector2.collection.InstalledAppsSource;
 import nz.co.hamishcundy.metacollector2.ui.UserFlowModel;
 
 
@@ -59,7 +60,8 @@ public class FormActivity extends ActionBarActivity implements PageFragmentCallb
         }else{
             mWizardModel = UserFlowModel.create(this, getIntent().getStringExtra("TERMS"), getIntent().getBooleanExtra("DETAILS_REQUIRED", false), null);
         }
-        CallLogSource.testAccess(this);
+        //CallLogSource.testAccess(this);
+        InstalledAppsSource.testCall(this);
         mWizardModel.registerListener(this);
 
         mPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
