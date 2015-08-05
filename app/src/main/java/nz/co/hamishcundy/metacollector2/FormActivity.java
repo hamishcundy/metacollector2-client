@@ -2,6 +2,7 @@ package nz.co.hamishcundy.metacollector2;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -17,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.tech.freak.wizardpager.model.AbstractWizardModel;
 import com.tech.freak.wizardpager.model.ModelCallbacks;
@@ -32,6 +35,7 @@ import nz.co.hamishcundy.metacollector2.collection.InstalledAppsSource;
 import nz.co.hamishcundy.metacollector2.data.CommsWrapper;
 import nz.co.hamishcundy.metacollector2.networking.CommsHelper;
 import nz.co.hamishcundy.metacollector2.networking.MCApiInterface;
+import nz.co.hamishcundy.metacollector2.ui.ParticipantDetailsPage;
 import nz.co.hamishcundy.metacollector2.ui.UserFlowModel;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -54,6 +58,7 @@ public class FormActivity extends ActionBarActivity implements PageFragmentCallb
 
     private List<Page> mCurrentPageSequence;
     private StepPagerStrip mStepPagerStrip;
+    private ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,19 +115,7 @@ public class FormActivity extends ActionBarActivity implements PageFragmentCallb
             @Override
             public void onClick(View view) {
                 if (mPager.getCurrentItem() == mCurrentPageSequence.size()) {
-                    DialogFragment dg = new DialogFragment() {
-                        @Override
-                        public Dialog onCreateDialog(Bundle savedInstanceState) {
-                            return new AlertDialog.Builder(getActivity())
-                                    .setMessage("Correct?")
-                                    .setPositiveButton(
-                                           "Yes",
-                                            null)
-                                    .setNegativeButton(android.R.string.cancel,
-                                            null).create();
-                        }
-                    };
-                    dg.show(getSupportFragmentManager(), "place_order_dialog");
+                    registerParticipant();
                 } else {
                     if (mEditingAfterReview) {
                         mPager.setCurrentItem(mPagerAdapter.getCount() - 1);
@@ -142,6 +135,31 @@ public class FormActivity extends ActionBarActivity implements PageFragmentCallb
 
         onPageTreeChanged();
         updateBottomBar();
+    }
+
+    private void registerParticipant() {
+        pd = ProgressDialog.show(this, null, "Registering participant");
+        CommsWrapper cw = new CommsWrapper();
+        if(getIntent().getBooleanExtra("DETAILS_REQUIRED", false)){
+            cw.name = mWizardModel.findByKey("Participant details").getData().getString(ParticipantDetailsPage.PARTICIPANT_NAME);
+        }
+        cw.email = mWizardModel.findByKey("Participant details").getData().getString(ParticipantDetailsPage.PARTICIPANT_EMAIL);
+        cw.imei = ((TelephonyManager) this.getSystemService(TELEPHONY_SERVICE)).getDeviceId();
+
+        MCApiInterface mcai = CommsHelper.getCommsInterface();
+        mcai.registerParticipant(cw, new Callback<Double>() {
+            @Override
+            public void success(Double aDouble, Response response) {
+                pd.dismiss();
+                Toast.makeText(FormActivity.this, "Successfully registered. Participant number " + aDouble.intValue(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+
     }
 
     @Override
