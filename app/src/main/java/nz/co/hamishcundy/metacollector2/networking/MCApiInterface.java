@@ -1,7 +1,9 @@
 package nz.co.hamishcundy.metacollector2.networking;
 
+import nz.co.hamishcundy.metacollector2.data.CommsWrapper;
 import nz.co.hamishcundy.metacollector2.data.SurveyDetails;
 import retrofit.Callback;
+import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.POST;
 import retrofit.http.Query;
@@ -17,5 +19,8 @@ public interface MCApiInterface {
 
     @GET("/api/GetSurveyDetails")
     void getSurveyDetails(Callback<SurveyDetails> callback);
+
+    @POST("/api/RegisterParticipant")
+    void registerParticipant(@Body CommsWrapper wrapper, Callback<Double> callback);
 
 }

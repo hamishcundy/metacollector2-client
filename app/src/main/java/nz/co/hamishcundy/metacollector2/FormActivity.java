@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,7 +29,13 @@ import java.util.List;
 
 import nz.co.hamishcundy.metacollector2.collection.CallLogSource;
 import nz.co.hamishcundy.metacollector2.collection.InstalledAppsSource;
+import nz.co.hamishcundy.metacollector2.data.CommsWrapper;
+import nz.co.hamishcundy.metacollector2.networking.CommsHelper;
+import nz.co.hamishcundy.metacollector2.networking.MCApiInterface;
 import nz.co.hamishcundy.metacollector2.ui.UserFlowModel;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 
 public class FormActivity extends ActionBarActivity implements PageFragmentCallbacks, ModelCallbacks, ReviewFragment.Callbacks{
@@ -62,6 +69,8 @@ public class FormActivity extends ActionBarActivity implements PageFragmentCallb
         }
 
         mWizardModel.registerListener(this);
+
+
 
         mPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
         mPager = (ViewPager) findViewById(R.id.pager);
