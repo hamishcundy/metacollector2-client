@@ -3,6 +3,7 @@ package nz.co.hamishcundy.metacollector2;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -35,6 +36,7 @@ import nz.co.hamishcundy.metacollector2.collection.InstalledAppsSource;
 import nz.co.hamishcundy.metacollector2.data.CommsWrapper;
 import nz.co.hamishcundy.metacollector2.networking.CommsHelper;
 import nz.co.hamishcundy.metacollector2.networking.MCApiInterface;
+import nz.co.hamishcundy.metacollector2.ui.CollectionActivity;
 import nz.co.hamishcundy.metacollector2.ui.ParticipantDetailsPage;
 import nz.co.hamishcundy.metacollector2.ui.UserFlowModel;
 import retrofit.Callback;
@@ -147,19 +149,38 @@ public class FormActivity extends ActionBarActivity implements PageFragmentCallb
         cw.imei = ((TelephonyManager) this.getSystemService(TELEPHONY_SERVICE)).getDeviceId();
 
         MCApiInterface mcai = CommsHelper.getCommsInterface();
-        mcai.registerParticipant(cw, new Callback<Double>() {
+        mcai.registerParticipant(cw, new Callback<Object>() {
             @Override
-            public void success(Double aDouble, Response response) {
+            public void success(Object obj, Response response) {
                 pd.dismiss();
-                Toast.makeText(FormActivity.this, "Successfully registered. Participant number " + aDouble.intValue(), Toast.LENGTH_SHORT).show();
+                if(obj instanceof Double){
+                    gotoCollection(((Double)obj).intValue());
+                }else{
+                    AlertDialog.Builder build = new AlertDialog.Builder(FormActivity.this);
+                    build.setIconAttribute(android.R.attr.alertDialogIcon);
+                    build.setTitle("Registration failed");
+                    build.setMessage("Failed to register participant: " + obj);
+                    build.setPositiveButton("Ok", null);
+                }
             }
 
             @Override
             public void failure(RetrofitError error) {
-
+                AlertDialog.Builder build = new AlertDialog.Builder(FormActivity.this);
+                build.setIconAttribute(android.R.attr.alertDialogIcon);
+                build.setTitle("Registration failed");
+                build.setMessage("Failed to register participant: could not connect to server. Please check your internet connection and try again.");
+                build.setPositiveButton("Ok", null);
             }
         });
 
+    }
+
+    private void gotoCollection(int participantId) {
+        Intent i = new Intent(this, CollectionActivity.class);
+        i.putExtra("PARTICIPANT_ID", participantId);
+        startActivity(i);
+        finish();
     }
 
     @Override

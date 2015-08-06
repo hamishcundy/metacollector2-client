@@ -21,9 +21,9 @@ import nz.co.hamishcundy.metacollector2.data.records.MetadataRecord;
 /**
  * Created by hamish on 30/07/15.
  */
-public class CallLogSource implements MetadataCollectionSource{
+public class CallLogSource extends MetadataCollectionSource{
 
-    public static final String name = "Call logs";
+    public static final String key = "Call logs";
     public static final String[] fields = {"formatted_number", "numbertype", "duration", "presentation", "type", "number", "date", "numberlabel", "name", "matched_number", "normalized_number"};
 
 
@@ -56,5 +56,10 @@ public class CallLogSource implements MetadataCollectionSource{
         List<ContentValues> data = MetadataCursorUtils.getRecordValuesIfPresent(c, con, fields);
         List<MetadataRecord> mr = convertCVtoMDR(data, con);
         return mr;
+    }
+
+    @Override
+    public String getKey() {
+        return key;
     }
 }

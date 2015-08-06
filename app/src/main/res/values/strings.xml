@@ -16,5 +16,6 @@ Nunc lobortis feugiat mi, vitae ullamcorper urna tristique eu. Quisque porttitor
 
 Nam quis augue eget lorem mattis vehicula. Etiam condimentum, augue quis accumsan pulvinar, massa massa placerat magna, id ornare mauris tellus id sapien. Maecenas eget posuere mauris. Donec at mattis felis. Proin eu gravida leo, ac accumsan libero. Suspendisse potenti. Proin non feugiat lectus. In accumsan ligula ut lacus ornare, id dignissim arcu malesuada. Sed arcu libero, cursus a dui in, finibus facilisis augue.</string>
     <string name="title_activity_splash">SplashActivity</string>
+    <string name="title_activity_collection">CollectionActivity</string>
 
 </resources>

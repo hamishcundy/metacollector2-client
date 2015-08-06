@@ -16,9 +16,15 @@ import nz.co.hamishcundy.metacollector2.data.records.SMSRecord;
 /**
  * Created by hamish on 2/08/15.
  */
-public class SMSSource implements MetadataCollectionSource {
+public class SMSSource extends MetadataCollectionSource {
 
     public static final String[] fields = {"thread_id", "address", "person", "date", "date_sent", "type"};
+    public static String key = "SMS logs";
+
+    @Override
+    public String getKey() {
+        return key;
+    }
 
     @Override
     public List<MetadataRecord> retrieveRecords(Context con) {

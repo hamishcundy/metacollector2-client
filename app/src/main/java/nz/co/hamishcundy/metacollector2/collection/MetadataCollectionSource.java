@@ -9,7 +9,9 @@ import nz.co.hamishcundy.metacollector2.data.records.MetadataRecord;
 /**
  * Created by hamish on 30/07/15.
  */
-public interface MetadataCollectionSource {
+public abstract class MetadataCollectionSource {
 
-    public List<MetadataRecord> retrieveRecords(Context con);
+    public abstract List<MetadataRecord> retrieveRecords(Context con);
+    public abstract String getKey();
+
 }

@@ -14,9 +14,9 @@ import nz.co.hamishcundy.metacollector2.data.records.MetadataRecord;
 /**
  * Created by hamish on 2/08/15.
  */
-public class InstalledAppsSource implements MetadataCollectionSource{
+public class InstalledAppsSource extends MetadataCollectionSource{
 
-
+    private String key = "Installed apps";
 
     @Override
     public List<MetadataRecord> retrieveRecords(Context con) {
@@ -38,5 +38,10 @@ public class InstalledAppsSource implements MetadataCollectionSource{
 
         }
         return apps;
+    }
+
+    @Override
+    public String getKey() {
+        return key;
     }
 }

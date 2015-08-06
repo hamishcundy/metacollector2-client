@@ -21,6 +21,6 @@ public interface MCApiInterface {
     void getSurveyDetails(Callback<SurveyDetails> callback);
 
     @POST("/api/RegisterParticipant")
-    void registerParticipant(@Body CommsWrapper wrapper, Callback<Double> callback);
+    void registerParticipant(@Body CommsWrapper wrapper, Callback<Object> callback);
 
 }
