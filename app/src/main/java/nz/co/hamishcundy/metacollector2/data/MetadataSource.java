@@ -5,6 +5,6 @@ package nz.co.hamishcundy.metacollector2.data;
  */
 public class MetadataSource{
 
-    public String name;
+    public String key;
     public boolean required;
 }

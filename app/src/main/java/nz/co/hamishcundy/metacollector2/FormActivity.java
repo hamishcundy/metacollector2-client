@@ -72,7 +72,7 @@ public class FormActivity extends ActionBarActivity implements PageFragmentCallb
         if (savedInstanceState != null) {
             mWizardModel.load(savedInstanceState.getBundle("model"));
         }else{
-            mWizardModel = UserFlowModel.create(this, getIntent().getStringExtra("TERMS"), getIntent().getBooleanExtra("DETAILS_REQUIRED", false), null);
+            mWizardModel = UserFlowModel.create(this, getIntent().getStringExtra("TERMS"), getIntent().getBooleanExtra("DETAILS_REQUIRED", false), ((MetacollectorApplication)getApplication()).sources);
         }
 
         mWizardModel.registerListener(this);

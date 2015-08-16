@@ -15,6 +15,7 @@ import com.tech.freak.wizardpager.model.TextPage;
 import java.util.List;
 
 import nz.co.hamishcundy.metacollector2.FormActivity;
+import nz.co.hamishcundy.metacollector2.collection.MetadataCollectionSource;
 import nz.co.hamishcundy.metacollector2.data.MetadataSource;
 
 /**
@@ -39,7 +40,8 @@ public class UserFlowModel extends AbstractWizardModel {
     @Override
     protected PageList onNewRootPageList() {
         Log.d("UFM2", "DetReq " + detailsRequired + " terms " + terms);
-        return new PageList(new TermsAndConditionsPage(this, "Terms and Conditions", terms).setRequired(true), new ParticipantDetailsPage(this, "Participant details", detailsRequired).setRequired(true), new MultipleFixedChoicePage(this, "Metadata sources").setChoices("Call logs", "SMS logs", "Contacts", "Browser bookmarks/history", "Facebook data", "Photo metadata", "Installed apps").setRequired(true));
+        String[] sources = getSourcesArray(collectionSources);
+        return new PageList(new TermsAndConditionsPage(this, "Terms and Conditions", terms).setRequired(true), new ParticipantDetailsPage(this, "Participant details", detailsRequired).setRequired(true), new MultipleFixedChoicePage(this, "Metadata sources").setChoices(sources).setRequired(true));
 //        return new PageList(new BranchPage(this, "Order type")
 //                .addBranch(
 //                        "Sandwich",
@@ -81,6 +83,14 @@ public class UserFlowModel extends AbstractWizardModel {
 //                        .setRequired(true),
 //
 //                new TermsAndConditionsPage(this, "Terms and Conditions").setRequired(true));
+    }
+
+    private String[] getSourcesArray(List<MetadataSource> collectionSources) {
+        String[] src = new String[collectionSources.size()];
+        for(int i = 0; i < collectionSources.size(); i++){
+            src[i] = MetadataCollectionSource.getName(collectionSources.get(i).key);
+        }
+        return src;
     }
 
     public static AbstractWizardModel create(Context con, String terms2, boolean details_required, List<MetadataSource> sources) {

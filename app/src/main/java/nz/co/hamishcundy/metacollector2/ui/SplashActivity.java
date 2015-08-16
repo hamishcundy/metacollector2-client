@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import nz.co.hamishcundy.metacollector2.FormActivity;
+import nz.co.hamishcundy.metacollector2.MetacollectorApplication;
 import nz.co.hamishcundy.metacollector2.R;
 import nz.co.hamishcundy.metacollector2.data.SurveyDetails;
 import nz.co.hamishcundy.metacollector2.networking.CommsHelper;
@@ -33,6 +34,7 @@ public class SplashActivity extends ActionBarActivity {
                 i.putExtra("DETAILS_REQUIRED", surveyDetails.details_required);
                 i.putExtra("TERMS", surveyDetails.terms);
                 i.putExtra("NAME", surveyDetails.name);
+                ((MetacollectorApplication)getApplication()).sources = surveyDetails.collection_sources;
                 startActivity(i);
                 finish();
             }

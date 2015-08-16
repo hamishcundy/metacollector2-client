@@ -23,7 +23,8 @@ import nz.co.hamishcundy.metacollector2.data.records.MetadataRecord;
  */
 public class CallLogSource extends MetadataCollectionSource{
 
-    public static final String key = "Call logs";
+    public static final String key = "call_logs";
+    public static final String name = "Call logs";
     public static final String[] fields = {"formatted_number", "numbertype", "duration", "presentation", "type", "number", "date", "numberlabel", "name", "matched_number", "normalized_number"};
 
 

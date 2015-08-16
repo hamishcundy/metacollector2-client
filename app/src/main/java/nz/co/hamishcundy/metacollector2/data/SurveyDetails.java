@@ -10,7 +10,7 @@ public class SurveyDetails {
 
     public boolean details_required;
     public String name, terms;
-    public List<MetadataSource> sources;
+    public List<MetadataSource> collection_sources;
 
 
 

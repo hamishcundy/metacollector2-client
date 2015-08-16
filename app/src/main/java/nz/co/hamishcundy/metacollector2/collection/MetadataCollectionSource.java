@@ -14,4 +14,29 @@ public abstract class MetadataCollectionSource {
     public abstract List<MetadataRecord> retrieveRecords(Context con);
     public abstract String getKey();
 
+    public static MetadataCollectionSource getSource(String key){
+        switch(key){
+            case SMSSource.key:
+                return new SMSSource();
+            case CallLogSource.key:
+                return new CallLogSource();
+            case InstalledAppsSource.key:
+                return new InstalledAppsSource();
+        }
+        return null;
+    }
+
+    public static String getName(String key){
+        switch(key){
+            case SMSSource.key:
+                return SMSSource.name;
+            case CallLogSource.key:
+                return CallLogSource.name;
+            case InstalledAppsSource.key:
+                return InstalledAppsSource.name;
+
+        }
+        return null;
+    }
+
 }
