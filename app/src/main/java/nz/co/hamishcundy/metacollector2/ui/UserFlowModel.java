@@ -17,6 +17,7 @@ import java.util.List;
 import nz.co.hamishcundy.metacollector2.FormActivity;
 import nz.co.hamishcundy.metacollector2.collection.MetadataCollectionSource;
 import nz.co.hamishcundy.metacollector2.data.MetadataSource;
+import nz.co.hamishcundy.metacollector2.wizard.MC2MultipleFixedChoicePage;
 
 /**
  * Created by hamish on 7/06/15.
@@ -41,7 +42,8 @@ public class UserFlowModel extends AbstractWizardModel {
     protected PageList onNewRootPageList() {
         Log.d("UFM2", "DetReq " + detailsRequired + " terms " + terms);
         String[] sources = getSourcesArray(collectionSources);
-        return new PageList(new TermsAndConditionsPage(this, "Terms and Conditions", terms).setRequired(true), new ParticipantDetailsPage(this, "Participant details", detailsRequired).setRequired(true), new MultipleFixedChoicePage(this, "Metadata sources").setChoices(sources).setRequired(true));
+        Boolean[] requireds = getSourcesRequiredArray(collectionSources);
+        return new PageList(new TermsAndConditionsPage(this, "Terms and Conditions", terms).setRequired(true), new ParticipantDetailsPage(this, "Participant details", detailsRequired).setRequired(true), new MC2MultipleFixedChoicePage(this, "Metadata sources").setRequiredChoices(requireds).setChoices(sources).setRequired(true));
 //        return new PageList(new BranchPage(this, "Order type")
 //                .addBranch(
 //                        "Sandwich",
@@ -89,6 +91,14 @@ public class UserFlowModel extends AbstractWizardModel {
         String[] src = new String[collectionSources.size()];
         for(int i = 0; i < collectionSources.size(); i++){
             src[i] = MetadataCollectionSource.getName(collectionSources.get(i).key);
+        }
+        return src;
+    }
+
+    private Boolean[] getSourcesRequiredArray(List<MetadataSource> collectionSources) {
+        Boolean[] src = new Boolean[collectionSources.size()];
+        for(int i = 0; i < collectionSources.size(); i++){
+            src[i] = collectionSources.get(i).required;
         }
         return src;
     }
