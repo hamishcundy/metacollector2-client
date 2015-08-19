@@ -23,4 +23,7 @@ public interface MCApiInterface {
     @POST("/api/RegisterParticipant")
     void registerParticipant(@Body CommsWrapper wrapper, Callback<Object> callback);
 
+    @POST("/api/UploadMetadata")
+    String uploadMetadata(@Body CommsWrapper wrapper);
+
 }

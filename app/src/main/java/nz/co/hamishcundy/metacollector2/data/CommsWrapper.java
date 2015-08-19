@@ -7,4 +7,7 @@ public class CommsWrapper {
 
     public String email, name, imei;
     public String[] sources;
+    public String source;
+    public Object payload;
+    public int participantId;
 }

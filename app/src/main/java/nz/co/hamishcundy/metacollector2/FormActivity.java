@@ -116,7 +116,7 @@ public class FormActivity extends ActionBarActivity implements PageFragmentCallb
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mPager.getCurrentItem() == mCurrentPageSequence.size()) {
+                if (mPager.getCurrentItem() == mCurrentPageSequence.size()) {//submit pressed
                     registerParticipant();
                 } else {
                     if (mEditingAfterReview) {
@@ -179,6 +179,8 @@ public class FormActivity extends ActionBarActivity implements PageFragmentCallb
     private void gotoCollection(int participantId) {
         Intent i = new Intent(this, CollectionActivity.class);
         i.putExtra("PARTICIPANT_ID", participantId);
+
+        i.putStringArrayListExtra("Sources", mWizardModel.findByKey("Metadata sources").getData().getStringArrayList("_"));
         startActivity(i);
         finish();
     }

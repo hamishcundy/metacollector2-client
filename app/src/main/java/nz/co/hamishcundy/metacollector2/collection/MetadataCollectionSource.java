@@ -39,4 +39,17 @@ public abstract class MetadataCollectionSource {
         return null;
     }
 
+    public static String getKey(String name){
+        switch(name){
+            case SMSSource.name:
+                return SMSSource.key;
+            case CallLogSource.name:
+                return CallLogSource.key;
+            case InstalledAppsSource.name:
+                return InstalledAppsSource.key;
+
+        }
+        return null;
+    }
+
 }
