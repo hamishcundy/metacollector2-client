@@ -10,7 +10,7 @@ public class SMSRecord implements MetadataRecord {
     public int person;
     public long date;
     public long dateSent;
-    public int type;
+    public int messageType;
 
 
 }

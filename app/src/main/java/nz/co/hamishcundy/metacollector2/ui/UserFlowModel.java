@@ -44,7 +44,7 @@ public class UserFlowModel extends AbstractWizardModel {
         String[] sources = getSourcesArray(collectionSources);
         Boolean[] requireds = getSourcesRequiredArray(collectionSources);
         return new PageList(new TermsAndConditionsPage(this, "Terms and Conditions", terms).setRequired(true), new ParticipantDetailsPage(this, "Participant details", detailsRequired).setRequired(true), new MC2MultipleFixedChoicePage(this, "Metadata sources").setRequiredChoices(requireds).setChoices(sources).setRequired(true));
-//        return new PageList(new BranchPage(this, "Order type")
+//        return new PageList(new BranchPage(this, "Order callType")
 //                .addBranch(
 //                        "Sandwich",
 //                        new SingleFixedChoicePage(this, "Bread").setChoices("White",
@@ -73,7 +73,7 @@ public class UserFlowModel extends AbstractWizardModel {
 //
 //                .addBranch(
 //                        "Salad",
-//                        new SingleFixedChoicePage(this, "Salad type").setChoices(
+//                        new SingleFixedChoicePage(this, "Salad callType").setChoices(
 //                                "Greek", "Caesar").setRequired(true),
 //
 //                        new SingleFixedChoicePage(this, "Dressing").setChoices(

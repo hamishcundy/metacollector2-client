@@ -3,6 +3,7 @@ package nz.co.hamishcundy.metacollector2.collection;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class MetadataCursorUtils {
                 ContentValues cv= new ContentValues();
                 for(String columnName:columnNames){
                     int ind = c.getColumnIndex(columnName);
-
+                    Log.d("MCU", ind + " " + columnName);
                     switch(c.getType(ind)){
                         case Cursor.FIELD_TYPE_INTEGER:
                             cv.put(columnName, c.getInt(ind));

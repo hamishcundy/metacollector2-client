@@ -3,15 +3,8 @@ package nz.co.hamishcundy.metacollector2.collection;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
-import android.provider.ContactsContract;
-import android.util.Log;
+import android.provider.CallLog;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,12 +26,14 @@ public class CallLogSource extends MetadataCollectionSource{
         for(ContentValues cv:data){
             CallLogRecord clr = new CallLogRecord();
             clr.formattedNumber = (String) cv.get("formatted_number");
-            clr.numberType = (int) cv.get("numbertype");
-            clr.duration = (int) cv.get("duration");
-            clr.presentation = (int) cv.get("presentation");
-            clr.type = (int) cv.get("type");
+            if(cv.containsKey("numbertype")){
+                clr.numberType = cv.getAsInteger("numbertype");
+            }
+            clr.duration = cv.getAsInteger("duration");
+            clr.presentation = cv.getAsInteger("presentation");
+            clr.callType = cv.getAsInteger("type");
             clr.number = (String) cv.get("number");
-            clr.date = (long) cv.get("date");
+            clr.date = cv.getAsLong("date");
             clr.numberLabel = (String) cv.get("numberlabel");
             clr.name = (String) cv.get("name");
             clr.matchedNumber = (String) cv.get("matched_number");
@@ -51,7 +46,7 @@ public class CallLogSource extends MetadataCollectionSource{
 
     @Override
     public List<MetadataRecord> retrieveRecords(Context con) {
-        Cursor c = con.getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, null, null,
+        Cursor c = con.getContentResolver().query(CallLog.Calls.CONTENT_URI, null, null,
                 null, null);
 
         List<ContentValues> data = MetadataCursorUtils.getRecordValuesIfPresent(c, con, fields);

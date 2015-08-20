@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
+import android.preference.DialogPreference;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -30,13 +31,27 @@ public class SplashActivity extends ActionBarActivity {
         mcai.getSurveyDetails(new Callback<SurveyDetails>() {
             @Override
             public void success(SurveyDetails surveyDetails, Response response) {
-                Intent i = new Intent(SplashActivity.this, FormActivity.class);
-                i.putExtra("DETAILS_REQUIRED", surveyDetails.details_required);
-                i.putExtra("TERMS", surveyDetails.terms);
-                i.putExtra("NAME", surveyDetails.name);
-                ((MetacollectorApplication)getApplication()).sources = surveyDetails.collection_sources;
-                startActivity(i);
-                finish();
+                if(surveyDetails != null) {
+                    Intent i = new Intent(SplashActivity.this, FormActivity.class);
+                    i.putExtra("DETAILS_REQUIRED", surveyDetails.details_required);
+                    i.putExtra("TERMS", surveyDetails.terms);
+                    i.putExtra("NAME", surveyDetails.name);
+                    ((MetacollectorApplication) getApplication()).sources = surveyDetails.collection_sources;
+                    startActivity(i);
+                    finish();
+                }else{
+                    AlertDialog.Builder build = new AlertDialog.Builder(SplashActivity.this);
+                    build.setIconAttribute(android.R.attr.alertDialogIcon);
+                    build.setTitle("No survey");
+                    build.setMessage("Could not retrieve survey details. Please confirm with the researcher that the survey has been configured.");
+                    build.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    });
+                    build.create().show();
+                }
             }
 
             @Override
@@ -62,7 +77,7 @@ public class SplashActivity extends ActionBarActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(findViewById(R.id.progressBar2) != null) {
+                if (findViewById(R.id.progressBar2) != null) {
                     findViewById(R.id.progressBar2).setVisibility(View.VISIBLE);
                 }
             }

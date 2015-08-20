@@ -9,7 +9,7 @@ public class CallLogRecord implements MetadataRecord{
     public int numberType;
     public int duration;
     public int presentation;
-    public int type;
+    public int callType;
     public String number;
     public long date;
     public String numberLabel;
