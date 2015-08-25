@@ -22,6 +22,8 @@ public abstract class MetadataCollectionSource {
                 return new CallLogSource();
             case InstalledAppsSource.key:
                 return new InstalledAppsSource();
+            case FacebookSource.key:
+                return new FacebookSource();
         }
         return null;
     }
@@ -34,6 +36,8 @@ public abstract class MetadataCollectionSource {
                 return CallLogSource.name;
             case InstalledAppsSource.key:
                 return InstalledAppsSource.name;
+            case FacebookSource.key:
+                return FacebookSource.name;
 
         }
         return null;
@@ -47,6 +51,8 @@ public abstract class MetadataCollectionSource {
                 return CallLogSource.key;
             case InstalledAppsSource.name:
                 return InstalledAppsSource.key;
+            case FacebookSource.name:
+                return FacebookSource.key;
 
         }
         return null;
