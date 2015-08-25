@@ -14,6 +14,7 @@ public abstract class MetadataCollectionSource {
     public abstract List<MetadataRecord> retrieveRecords(Context con);
     public abstract String getKey();
 
+
     public static MetadataCollectionSource getSource(String key){
         switch(key){
             case SMSSource.key:
@@ -24,6 +25,8 @@ public abstract class MetadataCollectionSource {
                 return new InstalledAppsSource();
             case FacebookSource.key:
                 return new FacebookSource();
+            case ContactsSource.key:
+                return new ContactsSource();
         }
         return null;
     }
@@ -38,6 +41,8 @@ public abstract class MetadataCollectionSource {
                 return InstalledAppsSource.name;
             case FacebookSource.key:
                 return FacebookSource.name;
+            case ContactsSource.key:
+                return ContactsSource.name;
 
         }
         return null;
@@ -53,6 +58,8 @@ public abstract class MetadataCollectionSource {
                 return InstalledAppsSource.key;
             case FacebookSource.name:
                 return FacebookSource.key;
+            case ContactsSource.name:
+                return ContactsSource.key;
 
         }
         return null;
