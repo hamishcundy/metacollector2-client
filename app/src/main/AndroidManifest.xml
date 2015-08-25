@@ -9,11 +9,12 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
+        android:name="nz.co.hamishcundy.metacollector2.MetacollectorApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".MetacollectorApplication"
         android:theme="@style/AppTheme" >
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <activity
             android:name=".FormActivity"
             android:configChanges="screenSize|orientation"
@@ -34,6 +35,15 @@
             android:name=".ui.CollectionActivity"
             android:label="@string/title_activity_collection" >
         </activity>
+        <activity
+            android:name=".ui.TestActivity"
+            android:label="@string/title_activity_test" >
+        </activity>
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name" />
     </application>
 
 </manifest>

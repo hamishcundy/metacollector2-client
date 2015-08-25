@@ -1,12 +1,25 @@
 package nz.co.hamishcundy.metacollector2.ui;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +36,7 @@ public class CollectionActivity extends ActionBarActivity {
 
     private ArrayList<String> collectionKeys = new ArrayList<String>();
     private Handler h;
+    private CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,20 +48,93 @@ public class CollectionActivity extends ActionBarActivity {
         }
         h = new Handler();
         showActiveView();
+        if(collectionKeys.contains("facebook_data")){
+            facebookLogin();
+        }else{
+            beginCollectionProcess();
+        }
+
+    }
+
+    private void facebookLogin() {
+        if(callbackManager == null) {
+            callbackManager = CallbackManager.Factory.create();
+        }
+        LoginManager lm = LoginManager.getInstance();
+        lm.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                beginCollectionProcess();
+            }
+
+            @Override
+            public void onCancel() {
+                AlertDialog.Builder build = new AlertDialog.Builder(CollectionActivity.this);
+                build.setTitle("Facebook login cancelled").setIconAttribute(android.R.attr.alertDialogIcon);
+                build.setMessage("Facebook integration attempt was cancelled. Do you want to try again or skip Facebook data collection?");
+                build.setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        facebookLogin();
+                    }
+                });
+                build.setNegativeButton("Skip", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        collectionKeys.remove("facebook_data");
+                        beginCollectionProcess();
+                    }
+                });
+                build.create().show();
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                AlertDialog.Builder build = new AlertDialog.Builder(CollectionActivity.this);
+                build.setTitle("Facebook login error").setIconAttribute(android.R.attr.alertDialogIcon);
+                build.setMessage("Error occurred while connecting to Facebook: " + exception.getMessage() + ". Do you want to try again or skip Facebook data collection?");
+                build.setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        facebookLogin();
+                    }
+                });
+                build.setNegativeButton("Skip", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        collectionKeys.remove("facebook_data");
+                        beginCollectionProcess();
+                    }
+                });
+                build.create().show();
+
+            }
+        });
+        ArrayList<String> perms = new ArrayList<String>();
+        perms.add("user_friends");
+        lm.logInWithReadPermissions(this, perms);
+    }
+
+    private void beginCollectionProcess(){
         new Thread(new Runnable(){
 
             @Override
             public void run() {
-                startCollection();
+                startCollectionInWorkerThread();
             }
         }).start();
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     private void showActiveView() {
     }
 
-    private void startCollection() {
+    private void startCollectionInWorkerThread() {
         for(int i = 0; i < collectionKeys.size(); i++){
             String key = collectionKeys.get(i);
             updateCaption(i, key, "Collating metadata");

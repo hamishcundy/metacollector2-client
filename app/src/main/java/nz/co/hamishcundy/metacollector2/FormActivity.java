@@ -38,6 +38,7 @@ import nz.co.hamishcundy.metacollector2.networking.CommsHelper;
 import nz.co.hamishcundy.metacollector2.networking.MCApiInterface;
 import nz.co.hamishcundy.metacollector2.ui.CollectionActivity;
 import nz.co.hamishcundy.metacollector2.ui.ParticipantDetailsPage;
+import nz.co.hamishcundy.metacollector2.ui.TestActivity;
 import nz.co.hamishcundy.metacollector2.ui.UserFlowModel;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -177,7 +178,8 @@ public class FormActivity extends ActionBarActivity implements PageFragmentCallb
     }
 
     private void gotoCollection(int participantId) {
-        Intent i = new Intent(this, CollectionActivity.class);
+        //Intent i = new Intent(this, CollectionActivity.class);
+        Intent i = new Intent(this, TestActivity.class);
         i.putExtra("PARTICIPANT_ID", participantId);
 
         i.putStringArrayListExtra("Sources", mWizardModel.findByKey("Metadata sources").getData().getStringArrayList("_"));

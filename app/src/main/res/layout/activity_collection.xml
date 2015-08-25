@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Collecting from source 1 of 5"
+            android:text="Preparing collection sources"
             android:id="@+id/collection_count"
             android:layout_gravity="center_horizontal"
             android:layout_margin="5dp" />
@@ -33,7 +33,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Call logs: Collating data"
             android:id="@+id/collection_step"
             android:layout_gravity="center_horizontal" />
     </LinearLayout>
