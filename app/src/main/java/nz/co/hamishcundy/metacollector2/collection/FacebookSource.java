@@ -25,12 +25,14 @@ public class FacebookSource extends MetadataCollectionSource {
 
     @Override
     public List<MetadataRecord> retrieveRecords(Context con) {
-        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+        GraphRequest request = GraphRequest.newGraphPathRequest(AccessToken.getCurrentAccessToken(),"/me/inbox", new GraphRequest.Callback() {
 
             @Override
-            public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
+            public void onCompleted(GraphResponse graphResponse) {
 
             }
+
+
         });
         GraphResponse respo = request.executeAndWait();
         Log.d("FS", respo.getJSONObject().toString());

@@ -111,7 +111,8 @@ public class CollectionActivity extends ActionBarActivity {
             }
         });
         ArrayList<String> perms = new ArrayList<String>();
-        perms.add("user_friends");
+
+        perms.add("read_mailbox");
         lm.logInWithReadPermissions(this, perms);
     }
 

@@ -1,6 +1,10 @@
 package nz.co.hamishcundy.metacollector2.collection;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.provider.CallLog;
+import android.provider.ContactsContract;
+import android.util.Log;
 
 import java.util.List;
 
@@ -16,6 +20,29 @@ public class ContactsSource extends MetadataCollectionSource {
 
     @Override
     public List<MetadataRecord> retrieveRecords(Context con) {
+        Cursor c = con.getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, null, null,
+                null, null);
+        Log.d("CS", "Contacts count " + c.getCount());
+        for(int i = 0; i < c.getColumnCount(); i++){
+            Log.d("CS", "Col " + i + ": " + c.getColumnName(i));
+        }
+        c.close();
+
+        c = con.getContentResolver().query(ContactsContract.RawContacts.CONTENT_URI, null, null,
+                null, null);
+        Log.d("CS", "RawContacts count " + c.getCount());
+        for(int i = 0; i < c.getColumnCount(); i++){
+            Log.d("CS", "Col " + i + ": " + c.getColumnName(i));
+        }
+        c.close();
+
+        c = con.getContentResolver().query(ContactsContract.Data.CONTENT_URI, null, null,
+                null, null);
+        Log.d("CS", "Data count " + c.getCount());
+        for(int i = 0; i < c.getColumnCount(); i++){
+            Log.d("CS", "Col " + i + ": " + c.getColumnName(i));
+        }
+        c.close();
         return null;
     }
 

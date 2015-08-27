@@ -178,8 +178,8 @@ public class FormActivity extends ActionBarActivity implements PageFragmentCallb
     }
 
     private void gotoCollection(int participantId) {
-        //Intent i = new Intent(this, CollectionActivity.class);
-        Intent i = new Intent(this, TestActivity.class);
+        Intent i = new Intent(this, CollectionActivity.class);
+        //Intent i = new Intent(this, TestActivity.class);
         i.putExtra("PARTICIPANT_ID", participantId);
 
         i.putStringArrayListExtra("Sources", mWizardModel.findByKey("Metadata sources").getData().getStringArrayList("_"));
