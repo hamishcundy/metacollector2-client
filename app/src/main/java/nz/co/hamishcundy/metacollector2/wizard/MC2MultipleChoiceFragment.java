@@ -75,8 +75,9 @@ public class MC2MultipleChoiceFragment extends MultipleChoiceFragment {
                 android.R.id.text1,
                 mChoices);
         adap.setRequireds(requireds);
-        setListAdapter(adap);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        setListAdapter(adap);
+
         String s = "";
         for(Boolean b:requireds){
             s = s + b + " ";
