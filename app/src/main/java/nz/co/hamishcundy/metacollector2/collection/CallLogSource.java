@@ -4,8 +4,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.CallLog;
+import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import nz.co.hamishcundy.metacollector2.data.records.CallLogRecord;
@@ -34,6 +37,8 @@ public class CallLogSource extends MetadataCollectionSource{
             clr.callType = cv.getAsInteger("type");
             clr.number = (String) cv.get("number");
             clr.date = cv.getAsLong("date");
+
+            Log.d("CLS", "Date: " + clr.date);
             clr.numberLabel = (String) cv.get("numberlabel");
             clr.name = (String) cv.get("name");
             clr.matchedNumber = (String) cv.get("matched_number");

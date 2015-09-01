@@ -39,4 +39,10 @@ public class MC2MultipleFixedChoicePage extends MultipleFixedChoicePage {
         this.requireds = requireds;
         return this;
     }
+
+    @Override
+    public boolean isCompleted() {
+
+        return super.isCompleted();
+    }
 }

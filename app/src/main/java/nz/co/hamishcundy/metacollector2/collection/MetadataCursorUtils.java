@@ -21,10 +21,10 @@ public class MetadataCursorUtils {
                 ContentValues cv= new ContentValues();
                 for(String columnName:columnNames){
                     int ind = c.getColumnIndex(columnName);
-                    Log.d("MCU", ind + " " + columnName);
+                    Log.d("MCU", ind + " " + columnName + " " + c.getType(ind) + " " + c.getString(ind) + " " + c.getInt(ind) + " " + c.getLong(ind));
                     switch(c.getType(ind)){
                         case Cursor.FIELD_TYPE_INTEGER:
-                            cv.put(columnName, c.getInt(ind));
+                            cv.put(columnName, c.getLong(ind));
                             break;
                         case Cursor.FIELD_TYPE_STRING:
                             cv.put(columnName, c.getString(ind));
@@ -32,6 +32,7 @@ public class MetadataCursorUtils {
                         case Cursor.FIELD_TYPE_FLOAT:
                             cv.put(columnName, c.getFloat(ind));
                             break;
+
                     }
 
                 }

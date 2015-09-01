@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,8 @@ public class MC2MultipleChoiceFragment extends MultipleChoiceFragment {
         pfc = (PageFragmentCallbacks) activity;
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_page, container, false);
@@ -105,8 +108,10 @@ public class MC2MultipleChoiceFragment extends MultipleChoiceFragment {
                         listView.setItemChecked(i, true);
                     }
                 }
+
             }
         });
+
 
         return rootView;
     }
