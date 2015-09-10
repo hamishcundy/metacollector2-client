@@ -16,6 +16,10 @@ public class MetacollectorApplication extends Application {
 
     public List<MetadataSource> sources;
 
+    public static final String PARTICIPANT_ID = "participant_id";
+    public static final String INITIAL_COLLECTION_COMPLETE = "initial_collection_complete";
+    public static final String BACKGROUND_LOCATION_RECORDING = "background_location_recording";
+
     @Override
     public void onCreate() {
         super.onCreate();

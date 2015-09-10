@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -29,7 +30,10 @@ import com.tech.freak.wizardpager.ui.PageFragmentCallbacks;
 import com.tech.freak.wizardpager.ui.ReviewFragment;
 import com.tech.freak.wizardpager.ui.StepPagerStrip;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import nz.co.hamishcundy.metacollector2.collection.CallLogSource;
 import nz.co.hamishcundy.metacollector2.collection.InstalledAppsSource;
@@ -181,8 +185,15 @@ public class FormActivity extends ActionBarActivity implements PageFragmentCallb
         Intent i = new Intent(this, CollectionActivity.class);
         //Intent i = new Intent(this, TestActivity.class);
         i.putExtra("PARTICIPANT_ID", participantId);
+        ArrayList<String> sources = mWizardModel.findByKey("Metadata sources").getData().getStringArrayList("_");
+        i.putStringArrayListExtra("Sources", sources);
+        Set<String> sourceSet = new HashSet<String>();
+        for(String s:sources){
+            sourceSet.add(s);
 
-        i.putStringArrayListExtra("Sources", mWizardModel.findByKey("Metadata sources").getData().getStringArrayList("_"));
+        }
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putInt(MetacollectorApplication.PARTICIPANT_ID, participantId).putStringSet("SOURCES", sourceSet).commit();
+
         startActivity(i);
         finish();
     }

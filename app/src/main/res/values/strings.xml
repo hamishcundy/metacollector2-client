@@ -19,5 +19,6 @@ Nam quis augue eget lorem mattis vehicula. Etiam condimentum, augue quis accumsa
     <string name="title_activity_collection">CollectionActivity</string>
     <string name="title_activity_test">TestActivity</string>
     <string name="facebook_app_id">426666417511913</string>
+    <string name="title_activity_finish">FinishActivity</string>
 
 </resources>

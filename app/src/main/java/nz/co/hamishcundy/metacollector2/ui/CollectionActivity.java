@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,13 +19,17 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.github.jorgecastilloprz.FABProgressCircle;
+import com.github.jorgecastilloprz.listeners.FABProgressListener;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import nz.co.hamishcundy.metacollector2.BootReceiver;
 import nz.co.hamishcundy.metacollector2.R;
+import nz.co.hamishcundy.metacollector2.collection.LocationSource;
 import nz.co.hamishcundy.metacollector2.collection.MetadataCollectionSource;
 import nz.co.hamishcundy.metacollector2.data.CommsWrapper;
 import nz.co.hamishcundy.metacollector2.data.records.MetadataRecord;
@@ -37,16 +42,24 @@ public class CollectionActivity extends ActionBarActivity {
     private ArrayList<String> collectionKeys = new ArrayList<String>();
     private Handler h;
     private CallbackManager callbackManager;
+    private FABProgressCircle progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collection);
+        progress = (FABProgressCircle) findViewById(R.id.fabProgressCircle);
+        progress.measure(20, 20);
         ArrayList<String> sources = getIntent().getStringArrayListExtra("Sources");
         for(String name:sources){
-            collectionKeys.add(MetadataCollectionSource.getKey(name));
+            if(name.equals(LocationSource.name)){
+                BootReceiver.startReceivingPassiveLocationUpdates(this);
+            }else {
+                collectionKeys.add(MetadataCollectionSource.getKey(name));
+            }
         }
         h = new Handler();
+
         showActiveView();
         if(collectionKeys.contains("facebook_data")){
             facebookLogin();
@@ -117,6 +130,7 @@ public class CollectionActivity extends ActionBarActivity {
     }
 
     private void beginCollectionProcess(){
+        progress.show();
         new Thread(new Runnable(){
 
             @Override
@@ -149,12 +163,35 @@ public class CollectionActivity extends ActionBarActivity {
             }
 
         }
+        collectionFinished();
+    }
+
+    private void collectionFinished() {
+        h.post(new Runnable() {
+            @Override
+            public void run() {
+                progress.attachListener(new FABProgressListener() {
+                    @Override
+                    public void onFABProgressAnimationEnd() {
+                        ((TextView) findViewById(R.id.collection_count)).setText("");
+                        ((FloatingActionButton)findViewById(R.id.fab)).setImageResource(R.drawable.ic_done);
+                        progress.hide();
+                    }
+                });
+
+                progress.beginFinalAnimation();
+                ((TextView) findViewById(R.id.collection_count)).setText("Finalising");
+                ((TextView) findViewById(R.id.collection_step)).setText("");
+
+            }
+        });
     }
 
     private void notifyError(final String result) {
         h.post(new Runnable() {
             @Override
             public void run() {
+                progress.hide();
                 showFailView();
                 AlertDialog.Builder builder = new AlertDialog.Builder(CollectionActivity.this);
                 builder.setIconAttribute(android.R.attr.alertDialogIcon);

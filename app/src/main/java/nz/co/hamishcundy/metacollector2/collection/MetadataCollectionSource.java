@@ -27,6 +27,8 @@ public abstract class MetadataCollectionSource {
                 return new FacebookSource();
             case ContactsSource.key:
                 return new ContactsSource();
+            case LocationSource.key:
+                return new LocationSource();
         }
         return null;
     }
@@ -43,6 +45,8 @@ public abstract class MetadataCollectionSource {
                 return FacebookSource.name;
             case ContactsSource.key:
                 return ContactsSource.name;
+            case LocationSource.key:
+                return LocationSource.name;
 
         }
         return null;
@@ -60,6 +64,8 @@ public abstract class MetadataCollectionSource {
                 return FacebookSource.key;
             case ContactsSource.name:
                 return ContactsSource.key;
+            case LocationSource.name:
+                return LocationSource.key;
 
         }
         return null;
