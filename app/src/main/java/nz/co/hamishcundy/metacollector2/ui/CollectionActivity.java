@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nz.co.hamishcundy.metacollector2.BootReceiver;
+import nz.co.hamishcundy.metacollector2.MetacollectorApplication;
 import nz.co.hamishcundy.metacollector2.R;
 import nz.co.hamishcundy.metacollector2.collection.LocationSource;
 import nz.co.hamishcundy.metacollector2.collection.MetadataCollectionSource;
@@ -53,6 +55,7 @@ public class CollectionActivity extends ActionBarActivity {
         ArrayList<String> sources = getIntent().getStringArrayListExtra("Sources");
         for(String name:sources){
             if(name.equals(LocationSource.name)){
+                PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(MetacollectorApplication.BACKGROUND_LOCATION_RECORDING, true).commit();
                 BootReceiver.startReceivingPassiveLocationUpdates(this);
             }else {
                 collectionKeys.add(MetadataCollectionSource.getKey(name));

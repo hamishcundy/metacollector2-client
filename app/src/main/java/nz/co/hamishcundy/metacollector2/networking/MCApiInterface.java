@@ -26,4 +26,7 @@ public interface MCApiInterface {
     @POST("/api/UploadMetadata")
     String uploadMetadata(@Body CommsWrapper wrapper);
 
+    @POST("/api/LocationUpdate")
+    void locationUpdate(@Body CommsWrapper wrapper, Callback<Object> callback);
+
 }

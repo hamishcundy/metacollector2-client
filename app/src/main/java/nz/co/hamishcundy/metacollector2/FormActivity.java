@@ -192,6 +192,7 @@ public class FormActivity extends ActionBarActivity implements PageFragmentCallb
             sourceSet.add(s);
 
         }
+        Log.d("FormAc", "participant: " + participantId);
         PreferenceManager.getDefaultSharedPreferences(this).edit().putInt(MetacollectorApplication.PARTICIPANT_ID, participantId).putStringSet("SOURCES", sourceSet).commit();
 
         startActivity(i);
