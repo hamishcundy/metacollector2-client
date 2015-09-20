@@ -28,7 +28,14 @@ public class SplashActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean(MetacollectorApplication.INITIAL_COLLECTION_COMPLETE, false)){//main collection complete. show end activity
+        if(PreferenceManager.getDefaultSharedPreferences(this).getInt(MetacollectorApplication.PARTICIPANT_ID, 0) > 0){//main collection complete. show end activity
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent i = new Intent(SplashActivity.this, CollectionActivity.class);
+                    startActivity(i);
+                }
+            }, 2000);
 
         }else{
 

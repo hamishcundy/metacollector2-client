@@ -5,28 +5,23 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.github.jorgecastilloprz.FABProgressCircle;
-import com.github.jorgecastilloprz.listeners.FABProgressListener;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import nz.co.hamishcundy.metacollector2.BootReceiver;
 import nz.co.hamishcundy.metacollector2.MetacollectorApplication;
@@ -44,36 +39,59 @@ public class CollectionActivity extends ActionBarActivity {
     private ArrayList<String> collectionKeys = new ArrayList<String>();
     private Handler h;
     private CallbackManager callbackManager;
-    private FABProgressCircle progress;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collection);
-        progress = (FABProgressCircle) findViewById(R.id.fabProgressCircle);
-        progress.measure(20, 20);
-        ArrayList<String> sources = getIntent().getStringArrayListExtra("Sources");
-        for(String name:sources){
-            if(name.equals(LocationSource.name)){
-                PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(MetacollectorApplication.BACKGROUND_LOCATION_RECORDING, true).commit();
-                BootReceiver.startReceivingPassiveLocationUpdates(this);
-            }else {
+
+        findViewById(R.id.start_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                collectionButtonPressed();
+            }
+        });
+        findViewById(R.id.retry_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                collectionButtonPressed();
+            }
+        });
+        findViewById(R.id.reupload_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                collectionButtonPressed();
+            }
+        });
+        Set<String> sources = PreferenceManager.getDefaultSharedPreferences(this).getStringSet(MetacollectorApplication.SOURCE_LIST, new HashSet<String>());
+        for (String name : sources) {
+            if (!name.equals(LocationSource.name)) {
+
                 collectionKeys.add(MetadataCollectionSource.getKey(name));
             }
         }
         h = new Handler();
-
-        showActiveView();
-        if(collectionKeys.contains("facebook_data")){
-            facebookLogin();
-        }else{
-            beginCollectionProcess();
+        if (getIntent().getBooleanExtra("AUTOSTART", false)) {
+            collectionButtonPressed();
+        } else {
+            showStartView();
         }
+
 
     }
 
+    private void collectionButtonPressed() {
+        showUploadingView();
+        if (collectionKeys.contains("facebook_data")) {
+            facebookLogin();
+        } else {
+            beginCollectionProcess();
+        }
+    }
+
     private void facebookLogin() {
-        if(callbackManager == null) {
+        if (callbackManager == null) {
             callbackManager = CallbackManager.Factory.create();
         }
         LoginManager lm = LoginManager.getInstance();
@@ -132,9 +150,8 @@ public class CollectionActivity extends ActionBarActivity {
         lm.logInWithReadPermissions(this, perms);
     }
 
-    private void beginCollectionProcess(){
-        progress.show();
-        new Thread(new Runnable(){
+    private void beginCollectionProcess() {
+        new Thread(new Runnable() {
 
             @Override
             public void run() {
@@ -149,18 +166,54 @@ public class CollectionActivity extends ActionBarActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void showActiveView() {
+    private void showUploadingView() {
+        ((TextView) findViewById(R.id.collection_count)).setText("Preparing collection sources");
+        ((TextView) findViewById(R.id.collection_step)).setText("");
+
+
+        findViewById(R.id.uploading_view).setVisibility(View.VISIBLE);
+        findViewById(R.id.fail_view).setVisibility(View.GONE);
+        findViewById(R.id.start_view).setVisibility(View.GONE);
+        findViewById(R.id.finish_view).setVisibility(View.GONE);
+
     }
 
+    private void showFailView(String failureReason) {
+
+        ((TextView) findViewById(R.id.fail_label)).setText(failureReason);
+        findViewById(R.id.uploading_view).setVisibility(View.GONE);
+        findViewById(R.id.fail_view).setVisibility(View.VISIBLE);
+        findViewById(R.id.start_view).setVisibility(View.GONE);
+        findViewById(R.id.finish_view).setVisibility(View.GONE);
+
+
+    }
+
+    private void showStartView() {
+        findViewById(R.id.uploading_view).setVisibility(View.GONE);
+        findViewById(R.id.fail_view).setVisibility(View.GONE);
+        findViewById(R.id.start_view).setVisibility(View.VISIBLE);
+        findViewById(R.id.finish_view).setVisibility(View.GONE);
+
+    }
+
+    private void showFinishView() {
+        findViewById(R.id.uploading_view).setVisibility(View.GONE);
+        findViewById(R.id.fail_view).setVisibility(View.GONE);
+        findViewById(R.id.start_view).setVisibility(View.GONE);
+        findViewById(R.id.finish_view).setVisibility(View.VISIBLE);
+    }
+
+
     private void startCollectionInWorkerThread() {
-        for(int i = 0; i < collectionKeys.size(); i++){
+        for (int i = 0; i < collectionKeys.size(); i++) {
             String key = collectionKeys.get(i);
             updateCaption(i, key, "Collating metadata");
             MetadataCollectionSource mcs = MetadataCollectionSource.getSource(key);
             List<MetadataRecord> mr = mcs.retrieveRecords(this);
             updateCaption(i, key, "Uploading metadata");
             String result = uploadData(mr, key);
-            if(result != null){
+            if (result != null) {
                 notifyError(result);
                 break;
             }
@@ -173,18 +226,8 @@ public class CollectionActivity extends ActionBarActivity {
         h.post(new Runnable() {
             @Override
             public void run() {
-                progress.attachListener(new FABProgressListener() {
-                    @Override
-                    public void onFABProgressAnimationEnd() {
-                        ((TextView) findViewById(R.id.collection_count)).setText("");
-                        ((FloatingActionButton)findViewById(R.id.fab)).setImageResource(R.drawable.ic_done);
-                        progress.hide();
-                    }
-                });
 
-                progress.beginFinalAnimation();
-                ((TextView) findViewById(R.id.collection_count)).setText("Finalising");
-                ((TextView) findViewById(R.id.collection_step)).setText("");
+                showFinishView();
 
             }
         });
@@ -194,31 +237,23 @@ public class CollectionActivity extends ActionBarActivity {
         h.post(new Runnable() {
             @Override
             public void run() {
-                progress.hide();
-                showFailView();
-                AlertDialog.Builder builder = new AlertDialog.Builder(CollectionActivity.this);
-                builder.setIconAttribute(android.R.attr.alertDialogIcon);
-                builder.setTitle("Upload error");
-                builder.setMessage("An error occurred while uploading data to the server: " + result);
-                builder.setPositiveButton("Ok", null);
-                builder.create().show();
+                showFailView("Failed to upload data: " + result);
+
             }
         });
     }
 
-    private void showFailView() {
-    }
 
     private String uploadData(List<MetadataRecord> mr, String key) {
         CommsWrapper cw = new CommsWrapper();
         cw.source = key;
-        cw.participantId = getIntent().getIntExtra("PARTICIPANT_ID", 0);
+        cw.participantId = PreferenceManager.getDefaultSharedPreferences(this).getInt(MetacollectorApplication.PARTICIPANT_ID, 0);
         cw.payload = mr;
         MCApiInterface mcapi = CommsHelper.getCommsInterface();
         String result;
         try {
             result = mcapi.uploadMetadata(cw);
-        }catch(RetrofitError e){
+        } catch (RetrofitError e) {
             e.printStackTrace();
             result = e.getMessage();
         }
@@ -236,25 +271,5 @@ public class CollectionActivity extends ActionBarActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_collection, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

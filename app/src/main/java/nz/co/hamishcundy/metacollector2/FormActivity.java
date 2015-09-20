@@ -37,6 +37,7 @@ import java.util.Set;
 
 import nz.co.hamishcundy.metacollector2.collection.CallLogSource;
 import nz.co.hamishcundy.metacollector2.collection.InstalledAppsSource;
+import nz.co.hamishcundy.metacollector2.collection.LocationSource;
 import nz.co.hamishcundy.metacollector2.data.CommsWrapper;
 import nz.co.hamishcundy.metacollector2.networking.CommsHelper;
 import nz.co.hamishcundy.metacollector2.networking.MCApiInterface;
@@ -184,17 +185,23 @@ public class FormActivity extends ActionBarActivity implements PageFragmentCallb
     private void gotoCollection(int participantId) {
         Intent i = new Intent(this, CollectionActivity.class);
         //Intent i = new Intent(this, TestActivity.class);
-        i.putExtra("PARTICIPANT_ID", participantId);
+
         ArrayList<String> sources = mWizardModel.findByKey("Metadata sources").getData().getStringArrayList("_");
-        i.putStringArrayListExtra("Sources", sources);
+
         Set<String> sourceSet = new HashSet<String>();
         for(String s:sources){
             sourceSet.add(s);
 
         }
-        Log.d("FormAc", "participant: " + participantId);
-        PreferenceManager.getDefaultSharedPreferences(this).edit().putInt(MetacollectorApplication.PARTICIPANT_ID, participantId).putStringSet("SOURCES", sourceSet).commit();
 
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putInt(MetacollectorApplication.PARTICIPANT_ID, participantId).putStringSet(MetacollectorApplication.SOURCE_LIST, sourceSet).commit();
+        i.putExtra("AUTOSTART", true);
+        for(String name:sources) {
+            if (name.equals(LocationSource.name)) {
+                PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(MetacollectorApplication.BACKGROUND_LOCATION_RECORDING, true).commit();
+                BootReceiver.startReceivingPassiveLocationUpdates(this);
+            }
+        }
         startActivity(i);
         finish();
     }
