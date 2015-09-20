@@ -17,29 +17,13 @@
         android:layout_gravity="center_vertical"
         android:id="@+id/uploading_view">
 
-        <com.github.jorgecastilloprz.FABProgressCircle
-            android:id="@+id/fabProgressCircle"
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="5dp"
-            android:layout_margin="5dp"
-            >
-
-            <!-- You can change it with the fab from the library you want to use -->
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_upload"
-                app:rippleColor="@color/accent"
-                app:elevation="@dimen/fab_elevation"
-                app:borderWidth="0dp"
-                app:finalIcon="@drawable/ic_done"
-                app:arcWidth="7dp"
-                />
-
-        </com.github.jorgecastilloprz.FABProgressCircle>
+            android:id="@+id/progressBar3"
+            android:layout_gravity="center_horizontal" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -65,6 +49,18 @@
 
     <LinearLayout
         android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fail_view"></LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/start_view"></LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/finish_view"></LinearLayout>

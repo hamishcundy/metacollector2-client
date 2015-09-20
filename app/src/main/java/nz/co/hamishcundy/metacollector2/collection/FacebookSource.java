@@ -66,10 +66,10 @@ public class FacebookSource extends MetadataCollectionSource {
             JSONArray data = respo.getJSONObject().getJSONArray("data");
             ArrayList<FacebookConversationRecord> fcr = new ArrayList<FacebookConversationRecord>();
             for (int i = 0; i < data.length(); i++) {//iterate through each conversation
-                String otherPerson = null;
+
                 FacebookConversationRecord convo = new FacebookConversationRecord();
                 JSONArray participants = data.getJSONObject(i).getJSONObject("to").getJSONArray("data");
-                if(participants.length() > 2) {//if group convo, add participants
+
                     ArrayList<String> participantNames = new ArrayList<String>();
                     for (int k = 0; k < participants.length(); k++) {
                         if (!participants.getJSONObject(k).getString("id").equals(myId)) {
@@ -77,26 +77,19 @@ public class FacebookSource extends MetadataCollectionSource {
                         }
                     }
                     convo.participants = participantNames;
-                }else{//single person. record name
-                    for (int k = 0; k < participants.length(); k++) {
-                        if (!participants.getJSONObject(k).getString("id").equals(myId)) {
-                            otherPerson = participants.getJSONObject(k).getString("name");
-                        }
-                    }
-                }
+
                 ArrayList<FacebookMessageRecord> fmr = new ArrayList<FacebookMessageRecord>();
                 JSONArray messages = data.getJSONObject(i).getJSONObject("comments").getJSONArray("data");
                 for (int j = 0; j < messages.length(); j++) {//iterate through messages
                     JSONObject message = messages.getJSONObject(j);
                     FacebookMessageRecord fm = new FacebookMessageRecord();
+                    fm.sender = message.getJSONObject("from").getString("name");
                     if(message.getJSONObject("from").getString("id").equals(myId)){//outgoing
-                        if(otherPerson != null) {
-                            fm.otherPartyName = otherPerson;
-                        }
+
 
                         fm.type = "outgoing";
                     }else{
-                        fm.otherPartyName = message.getJSONObject("from").getString("name");
+
                         fm.type = "incoming";
                     }
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");

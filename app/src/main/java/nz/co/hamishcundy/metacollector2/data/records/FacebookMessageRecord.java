@@ -5,7 +5,7 @@ package nz.co.hamishcundy.metacollector2.data.records;
  */
 public class FacebookMessageRecord {
 
-    public String otherPartyName;
+    public String sender;
     public String type;//"incoming","outgoing"
     public long date;
 }
