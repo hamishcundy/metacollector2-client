@@ -206,20 +206,25 @@ public class CollectionActivity extends ActionBarActivity {
 
 
     private void startCollectionInWorkerThread() {
+        String error = null;
         for (int i = 0; i < collectionKeys.size(); i++) {
             String key = collectionKeys.get(i);
             updateCaption(i, key, "Collating metadata");
             MetadataCollectionSource mcs = MetadataCollectionSource.getSource(key);
-            List<MetadataRecord> mr = mcs.retrieveRecords(this);
+            Object mr = mcs.retrieveRecords(this);
             updateCaption(i, key, "Uploading metadata");
             String result = uploadData(mr, key);
             if (result != null) {
-                notifyError(result);
+                error = result;
                 break;
             }
 
         }
-        collectionFinished();
+        if(error == null) {
+            collectionFinished();
+        }else{
+            notifyError(error);
+        }
     }
 
     private void collectionFinished() {
@@ -244,7 +249,7 @@ public class CollectionActivity extends ActionBarActivity {
     }
 
 
-    private String uploadData(List<MetadataRecord> mr, String key) {
+    private String uploadData(Object mr, String key) {
         CommsWrapper cw = new CommsWrapper();
         cw.source = key;
         cw.participantId = PreferenceManager.getDefaultSharedPreferences(this).getInt(MetacollectorApplication.PARTICIPANT_ID, 0);

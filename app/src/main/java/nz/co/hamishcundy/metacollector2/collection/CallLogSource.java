@@ -50,7 +50,7 @@ public class CallLogSource extends MetadataCollectionSource{
     }
 
     @Override
-    public List<MetadataRecord> retrieveRecords(Context con) {
+    public Object retrieveRecords(Context con) {
         Cursor c = con.getContentResolver().query(CallLog.Calls.CONTENT_URI, null, null,
                 null, null);
 

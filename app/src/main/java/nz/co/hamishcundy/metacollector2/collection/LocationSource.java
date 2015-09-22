@@ -14,7 +14,7 @@ public class LocationSource extends MetadataCollectionSource {
     public static final String key = "location";
     public static final String name = "Location (continuous)";
     @Override
-    public List<MetadataRecord> retrieveRecords(Context con) {
+    public Object retrieveRecords(Context con) {
         //dont do anything here as is all done by service
         return null;
     }

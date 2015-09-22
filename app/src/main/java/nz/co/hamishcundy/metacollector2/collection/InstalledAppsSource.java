@@ -21,7 +21,7 @@ public class InstalledAppsSource extends MetadataCollectionSource{
 
 
     @Override
-    public List<MetadataRecord> retrieveRecords(Context con) {
+    public Object retrieveRecords(Context con) {
         ArrayList<MetadataRecord> apps = new ArrayList<MetadataRecord>();
 
         final PackageManager pm = con.getPackageManager();

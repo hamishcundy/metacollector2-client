@@ -19,7 +19,7 @@ public class ContactsSource extends MetadataCollectionSource {
     public static final String name = "Contacts";
 
     @Override
-    public List<MetadataRecord> retrieveRecords(Context con) {
+    public Object retrieveRecords(Context con) {
         Cursor c = con.getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, null, null,
                 null, null);
         Log.d("CS", "Contacts count " + c.getCount());

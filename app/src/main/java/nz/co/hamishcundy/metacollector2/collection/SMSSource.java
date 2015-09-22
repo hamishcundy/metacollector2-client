@@ -26,7 +26,7 @@ public class SMSSource extends MetadataCollectionSource {
     }
 
     @Override
-    public List<MetadataRecord> retrieveRecords(Context con) {
+    public Object retrieveRecords(Context con) {
         Uri uriSMSURI = Uri.parse("content://sms/");
         Cursor c = con.getContentResolver().query(uriSMSURI, null, null,
                 null, null);

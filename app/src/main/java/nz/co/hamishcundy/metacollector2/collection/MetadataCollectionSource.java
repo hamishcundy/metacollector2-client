@@ -11,7 +11,7 @@ import nz.co.hamishcundy.metacollector2.data.records.MetadataRecord;
  */
 public abstract class MetadataCollectionSource {
 
-    public abstract List<MetadataRecord> retrieveRecords(Context con);
+    public abstract Object retrieveRecords(Context con);
     public abstract String getKey();
 
 

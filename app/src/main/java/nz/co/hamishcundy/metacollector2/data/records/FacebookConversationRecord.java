@@ -7,6 +7,6 @@ import java.util.ArrayList;
  */
 public class FacebookConversationRecord {
 
-    public ArrayList<FacebookMessageRecord> messages;
-    public ArrayList<String> participants;
+    public ArrayList<FacebookMessageRecord> messages_attributes;
+    public ArrayList<ConversationParticipants> conversation_participants_attributes;
 }
