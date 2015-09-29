@@ -1,0 +1,11 @@
+package nz.co.hamishcundy.metacollector2.data.records;
+
+/**
+ * Created by hamish on 29/09/15.
+ */
+public class ContactDataRecord implements MetadataRecord {
+
+    public String type;
+    public String data;
+
+}

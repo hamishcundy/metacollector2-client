@@ -18,6 +18,7 @@ public class MetadataCursorUtils {
         ArrayList<ContentValues> valuesList = new ArrayList<ContentValues>();
         if(c.moveToFirst()){
             do{
+                Log.d("MCU", "*****");
                 ContentValues cv= new ContentValues();
                 for(String columnName:columnNames){
                     int ind = c.getColumnIndex(columnName);
