@@ -12,5 +12,5 @@ public class ContactRecord implements MetadataRecord {
 
     public int timesContacted;
     public long lastTimeContacted;
-    public ArrayList<ContactDataRecord> data;
+    public ArrayList<ContactDataRecord> contact_data_records_attributes;
 }

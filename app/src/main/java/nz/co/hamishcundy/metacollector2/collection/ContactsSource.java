@@ -3,7 +3,6 @@ package nz.co.hamishcundy.metacollector2.collection;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.provider.CallLog;
 import android.provider.ContactsContract;
 import android.util.Log;
 
@@ -12,7 +11,6 @@ import java.util.List;
 
 import nz.co.hamishcundy.metacollector2.data.records.ContactDataRecord;
 import nz.co.hamishcundy.metacollector2.data.records.ContactRecord;
-import nz.co.hamishcundy.metacollector2.data.records.MetadataRecord;
 
 /**
  * Created by hamish on 26/08/15.
@@ -50,7 +48,7 @@ public class ContactsSource extends MetadataCollectionSource {
             c.displayName = cv.getAsString("display_name");
             c.timesContacted = cv.getAsInteger("times_contacted");
             c.lastTimeContacted = cv.getAsLong("last_time_contacted");
-            c.data = new ArrayList<ContactDataRecord>();
+            c.contact_data_records_attributes = new ArrayList<ContactDataRecord>();
             contactList.add(c);
         }
 
@@ -61,7 +59,7 @@ public class ContactsSource extends MetadataCollectionSource {
                     cdr.data = cv.getAsString("data1");
                     String mimetype = cv.getAsString("mimetype");
                     if(mimetype.equals(ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)) {
-                        cdr.type = "Phone";
+                        cdr.dataType = "Phone";
                         int subtype = cv.getAsInteger(ContactsContract.CommonDataKinds.Phone.TYPE);
                         switch (subtype){
                             case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
@@ -99,7 +97,7 @@ public class ContactsSource extends MetadataCollectionSource {
                                 break;
                         }
                     }else if(mimetype.equals(ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)) {
-                        cdr.type = "Email";
+                        cdr.dataType = "Email";
                         int subtype = cv.getAsInteger(ContactsContract.CommonDataKinds.Email.TYPE);
                         switch (subtype){
                             case ContactsContract.CommonDataKinds.Email.TYPE_HOME:
@@ -129,7 +127,7 @@ public class ContactsSource extends MetadataCollectionSource {
 
                     
                     if(cdr != null) {
-                        cd.data.add(cdr);
+                        cd.contact_data_records_attributes.add(cdr);
                     }
                 }
             }
