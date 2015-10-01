@@ -70,8 +70,32 @@ public class ContactsSource extends MetadataCollectionSource {
                             case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
                                 cdr.subType = "Mobile";
                                 break;
-                            default:
+                            case ContactsContract.CommonDataKinds.Phone.TYPE_COMPANY_MAIN:
+                                cdr.subType = "Company main";
+                                break;
+                            case ContactsContract.CommonDataKinds.Phone.TYPE_FAX_HOME:
+                                cdr.subType = "Fax home";
+                                break;
+                            case ContactsContract.CommonDataKinds.Phone.TYPE_FAX_WORK:
+                                cdr.subType = "Fax work";
+                                break;
+                            case ContactsContract.CommonDataKinds.Phone.TYPE_ISDN:
+                                cdr.subType = "ISDN";
+                                break;
+                            case ContactsContract.CommonDataKinds.Phone.TYPE_OTHER:
                                 cdr.subType = "Other";
+                                break;
+                            case ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
+                                cdr.subType = "Work";
+                                break;
+                            case ContactsContract.CommonDataKinds.Phone.TYPE_WORK_MOBILE:
+                                cdr.subType = "Work mobile";
+                                break;
+                            case ContactsContract.CommonDataKinds.Phone.TYPE_CUSTOM:
+                                cdr.subType = cv.getAsString(ContactsContract.CommonDataKinds.Phone.LABEL);
+                                break;
+                            default:
+                                cdr.subType = "Unknown";
                                 break;
                         }
                     }else if(mimetype.equals(ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)) {
@@ -90,8 +114,11 @@ public class ContactsSource extends MetadataCollectionSource {
                             case ContactsContract.CommonDataKinds.Email.TYPE_OTHER:
                                 cdr.subType = "Other";
                                 break;
+                            case ContactsContract.CommonDataKinds.Email.TYPE_CUSTOM:
+                                cdr.subType = cv.getAsString(ContactsContract.CommonDataKinds.Email.LABEL);
+                                break;
                             default:
-                                cdr.subType = "Other";
+                                cdr.subType = "Unknown";
                                 break;
                         }
 
