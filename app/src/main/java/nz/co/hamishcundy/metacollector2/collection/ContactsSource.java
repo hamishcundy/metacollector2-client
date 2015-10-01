@@ -59,9 +59,44 @@ public class ContactsSource extends MetadataCollectionSource {
                 if(cd.contactId == cv.getAsInteger("contact_id")){
                     ContactDataRecord cdr = new ContactDataRecord();
                     cdr.data = cv.getAsString("data1");
-                    if(cv.getAsString("mimetype").equals(null)){
+                    String mimetype = cv.getAsString("mimetype");
+                    if(mimetype.equals(ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)) {
+                        cdr.type = "Phone";
+                        int subtype = cv.getAsInteger(ContactsContract.CommonDataKinds.Phone.TYPE);
+                        switch (subtype){
+                            case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
+                                cdr.subType = "Home";
+                                break;
+                            case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
+                                cdr.subType = "Mobile";
+                                break;
+                            default:
+                                cdr.subType = "Other";
+                                break;
+                        }
+                    }else if(mimetype.equals(ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)) {
+                        cdr.type = "Email";
+                        int subtype = cv.getAsInteger(ContactsContract.CommonDataKinds.Email.TYPE);
+                        switch (subtype){
+                            case ContactsContract.CommonDataKinds.Email.TYPE_HOME:
+                                cdr.subType = "Home";
+                                break;
+                            case ContactsContract.CommonDataKinds.Email.TYPE_WORK:
+                                cdr.subType = "Work";
+                                break;
+                            case ContactsContract.CommonDataKinds.Email.TYPE_MOBILE:
+                                cdr.subType = "Mobile";
+                                break;
+                            case ContactsContract.CommonDataKinds.Email.TYPE_OTHER:
+                                cdr.subType = "Other";
+                                break;
+                            default:
+                                cdr.subType = "Other";
+                                break;
+                        }
 
                     }else{
+                        Log.d("CS", "Removing contact data of type " + mimetype);
                         cdr = null;
                     }
 

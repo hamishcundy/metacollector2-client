@@ -6,6 +6,7 @@ package nz.co.hamishcundy.metacollector2.data.records;
 public class ContactDataRecord implements MetadataRecord {
 
     public String type;
+    public String subType;
     public String data;
 
 }
