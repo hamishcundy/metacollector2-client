@@ -3,6 +3,7 @@ package nz.co.hamishcundy.metacollector2;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
@@ -183,7 +184,7 @@ public class FormActivity extends ActionBarActivity implements PageFragmentCallb
     }
 
     private void gotoCollection(int participantId) {
-        Intent i = new Intent(this, CollectionActivity.class);
+        final Intent i = new Intent(this, CollectionActivity.class);
         //Intent i = new Intent(this, TestActivity.class);
 
         ArrayList<String> sources = mWizardModel.findByKey("Metadata sources").getData().getStringArrayList("_");
@@ -196,14 +197,51 @@ public class FormActivity extends ActionBarActivity implements PageFragmentCallb
 
         PreferenceManager.getDefaultSharedPreferences(this).edit().putInt(MetacollectorApplication.PARTICIPANT_ID, participantId).putStringSet(MetacollectorApplication.SOURCE_LIST, sourceSet).commit();
         i.putExtra("AUTOSTART", true);
+        boolean locationSel = false;
         for(String name:sources) {
+
             if (name.equals(LocationSource.name)) {
-                PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(MetacollectorApplication.BACKGROUND_LOCATION_RECORDING, true).commit();
-                BootReceiver.startReceivingPassiveLocationUpdates(this);
+                locationSel = true;
+
             }
         }
-        startActivity(i);
-        finish();
+        if(locationSel){
+            AlertDialog.Builder build = new AlertDialog.Builder(this);
+            build.setTitle("Location mode");
+            build.setMessage("Use passive or active location capture? Active capture will increase battery usage.");
+
+            build.setPositiveButton("Active", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    startActiveLocationCollection();
+                    startActivity(i);
+                    finish();
+                }
+            }).setNegativeButton("Passive", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    startPassiveLocationCollection();
+                    startActivity(i);
+                    finish();
+                }
+            });
+            build.create().show();
+
+        }else{
+            startActivity(i);
+            finish();
+        }
+
+    }
+
+    public void startPassiveLocationCollection(){
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(MetacollectorApplication.BACKGROUND_LOCATION_RECORDING, true).commit();
+        BootReceiver.startReceivingPassiveLocationUpdates(this);
+    }
+
+    public void startActiveLocationCollection(){
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(MetacollectorApplication.BACKGROUND_LOCATION_RECORDING, true).putBoolean(MetacollectorApplication.ACTIVE_LOCATION, true).commit();
+        BootReceiver.startReceivingActiveLocationUpdates(this);
     }
 
     @Override

@@ -18,6 +18,7 @@ public class MetacollectorApplication extends Application {
 
     public static final String PARTICIPANT_ID = "participant_id";
     public static final String BACKGROUND_LOCATION_RECORDING = "background_location_recording";
+    public static final String ACTIVE_LOCATION = "active_location_provider";
     public static final String SOURCE_LIST = "source_list";
 
     @Override
