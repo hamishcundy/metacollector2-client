@@ -41,5 +41,6 @@ public class BootReceiver extends BroadcastReceiver {
         Intent i = new Intent(context, LocationReceiver.class);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 300000, 100, PendingIntent.getBroadcast(context,0,i,0));
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 300000, 100, PendingIntent.getBroadcast(context,0,i,0));
+        locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 0, 0, PendingIntent.getBroadcast(context, 0, i, 0));
     }
 }

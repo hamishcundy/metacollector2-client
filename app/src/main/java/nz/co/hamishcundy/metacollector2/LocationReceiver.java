@@ -24,28 +24,31 @@ public class LocationReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         Location loc = (Location) intent.getExtras().get(LocationManager.KEY_LOCATION_CHANGED);
-        Log.d("LocationReceiver", loc.toString());
-        MCApiInterface mcai = CommsHelper.getCommsInterface();
-        LocationRecord lr = new LocationRecord();
-        lr.latitude = loc.getLatitude();
-        lr.longitude = loc.getLongitude();
-        lr.accuracy = loc.getAccuracy();
-        lr.source = loc.getProvider();
-        lr.date = System.currentTimeMillis();
+        if(loc != null) {
+            MCApiInterface mcai = CommsHelper.getCommsInterface();
+            LocationRecord lr = new LocationRecord();
+            lr.latitude = loc.getLatitude();
+            lr.longitude = loc.getLongitude();
+            lr.accuracy = loc.getAccuracy();
+            lr.source = loc.getProvider();
+            lr.date = System.currentTimeMillis();
 
-        CommsWrapper cw = new CommsWrapper();
-        cw.location = lr;
-        cw.participantId = PreferenceManager.getDefaultSharedPreferences(context).getInt(MetacollectorApplication.PARTICIPANT_ID, 0);
-        mcai.locationUpdate(cw, new Callback<Object>() {
-            @Override
-            public void success(Object o, Response response) {
+            CommsWrapper cw = new CommsWrapper();
+            cw.location = lr;
+            cw.participantId = PreferenceManager.getDefaultSharedPreferences(context).getInt(MetacollectorApplication.PARTICIPANT_ID, 0);
+            mcai.locationUpdate(cw, new Callback<Object>() {
+                @Override
+                public void success(Object o, Response response) {
 
-            }
+                }
 
-            @Override
-            public void failure(RetrofitError error) {
+                @Override
+                public void failure(RetrofitError error) {
 
-            }
-        });
+                }
+            });
+        }else{
+            Log.d("LocRec", "Loc null");
+        }
     }
 }
